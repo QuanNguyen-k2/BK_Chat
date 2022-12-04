@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "419890923096",
+    "project_id": "bkchat-e244a",
+    "storage_bucket": "bkchat-e244a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:419890923096:android:1a9d7b5bfc75f9a5886c2d",
+        "android_client_info": {
+          "package_name": "com.chatapp.bkchat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "419890923096-7ei2p4cm6jpdpq326lbiuukpgeo1c3jf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC_m2liQgNcaZ6s8qEa12ADe6IyB_aH-6Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "419890923096-7ei2p4cm6jpdpq326lbiuukpgeo1c3jf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
