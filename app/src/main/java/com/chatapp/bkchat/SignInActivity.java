@@ -5,19 +5,25 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 
 public class SignInActivity extends AppCompatActivity {
 
-    FirebaseUser currentUser;
     Button signInButton;
-    EditText userEmail,userPassword;
+    EditText userEmail, userPassword;
     TextView signUp;
 
+    FirebaseAuth auth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,31 +36,59 @@ public class SignInActivity extends AppCompatActivity {
 
     private void listener() {
         signUp.setOnClickListener(v -> sendUserToSignUp());
-
+        signInButton.setOnClickListener(v -> signIn());
     }
 
-    private void khoiTao() {
-        signInButton=findViewById(R.id.buttonSignIn);
-        userEmail=findViewById(R.id.inputEmail);
-        userPassword=findViewById(R.id.inputPassword);
-        signUp=findViewById(R.id.textSignUp);
+    private void signIn() {
+        if (isValidateSignIn()) {
+            String email = userEmail.getText().toString();
+            String password = userPassword.getText().toString();
 
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        if(currentUser!=null){
-            sendUserToMainAc();
+            auth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                @Override
+                public void onComplete(@NonNull Task<AuthResult> task) {
+                    if (task.isSuccessful()) {
+                        sendUserToMainAc();
+                        Toast.makeText(SignInActivity.this, "Login Success", Toast.LENGTH_SHORT).show();
+                    } else {
+                        String mes = task.getException().toString();
+                        Toast.makeText(SignInActivity.this, "Error " + mes, Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
         }
     }
 
-    private void sendUserToMainAc() {
-        Intent main= new Intent(SignInActivity.this,MainActivity.class);
-        startActivity(main);
+    private boolean isValidateSignIn() {
+        if (userEmail.getText().toString().trim().isEmpty()) {
+            Toast.makeText(this, "Enter your name", Toast.LENGTH_SHORT).show();
+            return false;
+        } else if (userPassword.getText().toString().trim().isEmpty()) {
+            Toast.makeText(this, "Enter your password", Toast.LENGTH_SHORT).show();
+            return false;
+        } else {
+            return true;
+        }
     }
+
+    private void khoiTao() {
+        signInButton = findViewById(R.id.buttonSignIn);
+        userEmail = findViewById(R.id.inputEmail);
+        userPassword = findViewById(R.id.inputPassword);
+        signUp = findViewById(R.id.textSignUp);
+
+        auth = FirebaseAuth.getInstance();
+    }
+
+    private void sendUserToMainAc() {
+        Intent main = new Intent(SignInActivity.this, MainActivity.class);
+        main.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(main);
+        finish();
+    }
+
     private void sendUserToSignUp() {
-        Intent register= new Intent(SignInActivity.this,SignUpActivity.class);
+        Intent register = new Intent(SignInActivity.this, SignUpActivity.class);
         startActivity(register);
     }
 }
