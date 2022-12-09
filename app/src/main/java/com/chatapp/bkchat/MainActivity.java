@@ -52,6 +52,11 @@ public class MainActivity extends AppCompatActivity {
                     sendUserToSetting();
                     return true ;
                 }
+                case R.id.find_friends_layout:{
+                    sendUserToFindFriends();
+                    return true;
+
+                }
                 default:
                     return false;
             }
@@ -112,6 +117,12 @@ public class MainActivity extends AppCompatActivity {
         //set.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(set);
         //finish();
+    }
+    private void sendUserToFindFriends() {
+        Intent find = new Intent(MainActivity.this, FindFriendsActivity.class);
+        find.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(find);
+        finish();
     }
 
 }
