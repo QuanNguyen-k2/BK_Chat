@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
                     sendUserToSetting();
                     return true ;
                 }
-                case R.id.find_friends_layout:{
+                case R.id.FindFriends:{
                     sendUserToFindFriends();
                     return true;
 

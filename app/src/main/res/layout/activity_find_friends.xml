@@ -7,9 +7,8 @@
     tools:context=".FindFriendsActivity">
 
     <include
-        layout="@layout/layout_toolbar"
         android:id="@+id/find_friends_layout"
-        >
+        layout="@layout/layout_toolbar">
 
     </include>
 
