@@ -120,9 +120,9 @@ public class MainActivity extends AppCompatActivity {
     }
     private void sendUserToFindFriends() {
         Intent find = new Intent(MainActivity.this, FindFriendsActivity.class);
-        find.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+       // find.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(find);
-        finish();
+
     }
 
 }
