@@ -110,7 +110,7 @@ public class FindFriendsActivity extends AppCompatActivity {
     {
 
         TextView userName, userStatus;
-        ImageView profileImage;
+        RoundedImageView profileImage;
         public FindFriendViewHolder(@NonNull View itemView)
         {
 
