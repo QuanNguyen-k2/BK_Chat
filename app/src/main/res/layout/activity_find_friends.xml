@@ -8,8 +8,7 @@
 
     <include
         android:id="@+id/find_friends_layout"
-        layout="@layout/layout_toolbar">
-
+        layout="@layout/layout_sub">
     </include>
 
     <androidx.recyclerview.widget.RecyclerView
