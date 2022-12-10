@@ -10,6 +10,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -34,6 +35,7 @@ public class SettingActivity extends AppCompatActivity {
     RoundedImageView avatar;
     String uid;
     Uri selectedImageUri;
+    Toolbar mToolbar;
 
 
     @Override
@@ -66,6 +68,7 @@ public class SettingActivity extends AppCompatActivity {
 
             rootRef.child("Users").child(uid).child("username").setValue(username);
             rootRef.child("Users").child(uid).child("description").setValue(newDescription);
+            Toast.makeText(SettingActivity.this, "Cập Nhật Thành Công", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -132,6 +135,13 @@ public class SettingActivity extends AppCompatActivity {
         rootRef = FirebaseDatabase.getInstance().getReference();
         storageRef = FirebaseStorage.getInstance().getReference().child("ImageProfile");
         avatar = findViewById(R.id.yourAvatar);
+
+        mToolbar = findViewById(R.id.toolbar_setting);
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setTitle("Setting");
+
     }
 
 }

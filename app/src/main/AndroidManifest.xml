@@ -14,16 +14,18 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.BKChat"
         tools:targetApi="31">
-<!--        <activity-->
-<!--            android:name=".FindFriendsActivity"-->
-<!--            android:exported="false">-->
-<!--            <meta-data-->
-<!--                android:name="android.app.lib_name"-->
-<!--                android:value="" />-->
-<!--        </activity>-->
+        <!--        <activity-->
+        <!--            android:name=".FindFriendsActivity"-->
+        <!--            android:exported="false">-->
+        <!--            <meta-data-->
+        <!--                android:name="android.app.lib_name"-->
+        <!--                android:value="" />-->
+        <!--        </activity>-->
         <activity
             android:name=".SettingActivity"
-            android:exported="false">
+            android:exported="false"
+            android:parentActivityName=".MainActivity"
+            android:windowSoftInputMode="stateHidden">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
@@ -56,9 +58,9 @@
                 android:value="" />
         </activity>
 
-        <activity android:name=".FindFriendsActivity"
-            android:parentActivityName=".MainActivity"
-            ></activity>
+        <activity
+            android:name=".FindFriendsActivity"
+            android:parentActivityName=".MainActivity"></activity>
     </application>
 
 </manifest>
