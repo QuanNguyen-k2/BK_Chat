@@ -4,7 +4,8 @@ public class Contacts
 {
     public String username, description, image;
 
-    public Contacts(){
+    public Contacts()
+    {
 
     }
 
