@@ -23,7 +23,7 @@ public class TabAccessorAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         switch (position) {
             case 0:
-                return new MesFragment();
+                return new ChatsFragment();
             case 1:
                 return new ContactFragment();
             case 2:
