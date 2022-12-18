@@ -1,10 +1,13 @@
 package com.chatapp.bkchat;
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -33,9 +36,11 @@ public class SettingActivity extends AppCompatActivity {
     DatabaseReference rootRef;
     StorageReference storageRef;
     RoundedImageView avatar;
+    ImageView coverImage;
     String uid;
     Uri selectedImageUri;
     Toolbar mToolbar;
+    String path;
 
 
     @Override
@@ -46,15 +51,16 @@ public class SettingActivity extends AppCompatActivity {
         khoiTao();
         listener();
         retrieveUser();
-
     }
 
     private void listener() {
         update.setOnClickListener(v -> updateData());
-        avatar.setOnClickListener(v -> selectImage());
+        avatar.setOnClickListener(v -> selectImage("ImageProfile"));
+        coverImage.setOnClickListener(v -> selectImage("ImageCover"));
     }
 
-    private void selectImage() {
+    private void selectImage(String type) {
+        path=type;
         Intent i = new Intent();
         i.setType("image/*");
         i.setAction(Intent.ACTION_GET_CONTENT);
@@ -62,13 +68,17 @@ public class SettingActivity extends AppCompatActivity {
     }
 
     private void updateData() {
+        description.clearFocus();
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(description.getWindowToken(), 0);
+
         if (isValidate()) {
             String username = name.getText().toString();
             String newDescription = description.getText().toString();
 
             rootRef.child("Users").child(uid).child("username").setValue(username);
             rootRef.child("Users").child(uid).child("description").setValue(newDescription);
-            Toast.makeText(SettingActivity.this, "Cập Nhật Thành Công", Toast.LENGTH_SHORT).show();
+            Toast.makeText(SettingActivity.this, "Update Successful", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -79,11 +89,17 @@ public class SettingActivity extends AppCompatActivity {
             if (requestCode == SELECT_PICTURE) {
                 selectedImageUri = data.getData();
                 if (null != selectedImageUri) {
-                    StorageReference filePath = storageRef.child(uid + ".jpg");
+                    StorageReference filePath = storageRef.child(path).child(uid + ".jpg");
                     filePath.putFile(selectedImageUri).addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {
-                            filePath.getDownloadUrl().addOnSuccessListener(uri -> rootRef.child("Users").child(uid).child("image").setValue(uri.toString().trim()));
-                            Toast.makeText(SettingActivity.this, "Ảnh Đại Diện Đã Thay Đổi", Toast.LENGTH_SHORT).show();
+                            filePath.getDownloadUrl().addOnSuccessListener(uri -> {
+                                if (path.equals("ImageProfile")) {
+                                    rootRef.child("Users").child(uid).child("image").setValue(uri.toString().trim());
+                                } else if (path.equals("ImageCover")) {
+                                    rootRef.child("Users").child(uid).child("coverImage").setValue(uri.toString().trim());
+                                }
+                            });
+                            Toast.makeText(SettingActivity.this, "Your Avatar Update Successful", Toast.LENGTH_SHORT).show();
                         } else {
                             Toast.makeText(SettingActivity.this, task.getException().toString(), Toast.LENGTH_SHORT).show();
                         }
@@ -115,6 +131,10 @@ public class SettingActivity extends AppCompatActivity {
                         String retrieveImage = snapshot.child("image").getValue().toString().trim();
                         Picasso.get().load(retrieveImage).into(avatar);
                     }
+                    if(snapshot.hasChild("coverImage")){
+                        String retrieveImage = snapshot.child("coverImage").getValue().toString().trim();
+                        Picasso.get().load(retrieveImage).into(coverImage);
+                    }
                 }
             }
 
@@ -129,18 +149,19 @@ public class SettingActivity extends AppCompatActivity {
         update = findViewById(R.id.buttonUpdate);
         name = findViewById(R.id.set_name);
         description = findViewById(R.id.set_description);
+        coverImage = findViewById(R.id.image_cover);
 
         auth = FirebaseAuth.getInstance();
         uid = auth.getCurrentUser().getUid();
         rootRef = FirebaseDatabase.getInstance().getReference();
-        storageRef = FirebaseStorage.getInstance().getReference().child("ImageProfile");
+        storageRef = FirebaseStorage.getInstance().getReference();
         avatar = findViewById(R.id.yourAvatar);
 
         mToolbar = findViewById(R.id.toolbar_setting);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setTitle("Setting");
+        setTitle("");
 
     }
 

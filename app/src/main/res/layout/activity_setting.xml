@@ -1,81 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     tools:context=".SettingActivity">
 
     <include
         android:id="@+id/toolbar_setting"
-        layout="@layout/layout_sub">
-    </include>
+        layout="@layout/layout_toolbar"></include>
 
-    <ScrollView
+    <ImageView
+        android:id="@+id/image_cover"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:paddingTop="@dimen/_35sdp">
+        android:layout_height="@dimen/_150sdp"
+        android:layout_marginTop="@dimen/_50sdp"
+        android:scaleType="fitXY"
+        android:src="@drawable/profile_image"
+        />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:orientation="vertical">
+    <com.makeramen.roundedimageview.RoundedImageView
+        android:id="@+id/yourAvatar"
+        android:layout_width="@dimen/_120sdp"
+        android:layout_height="@dimen/_120sdp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/_135sdp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/image_user"
+        app:riv_border_color="#1E88E5"
+        app:riv_border_width="1dp"
+        app:riv_oval="true" />
 
+    <EditText
+        android:id="@+id/set_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/yourAvatar"
+        android:layout_marginTop="10dp"
+        android:background="#00000000"
+        android:text="Username"
+        android:enabled="false"
+        android:textAlignment="center"
+        android:textAllCaps="false"
+        android:textColor="@color/primary_text"
+        android:textSize="@dimen/_18sdp"
+        android:textStyle="bold" />
 
-            <com.makeramen.roundedimageview.RoundedImageView
-                android:id="@+id/yourAvatar"
-                android:layout_width="@dimen/_120sdp"
-                android:layout_height="@dimen/_120sdp"
-                android:scaleType="centerCrop"
-                android:src="@drawable/image_user"
-                app:riv_border_width="1dp"
-                app:riv_border_color="#1E88E5"
-                app:riv_oval="true" />
+    <EditText
+        android:id="@+id/set_description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/set_name"
+        android:layout_marginTop="10dp"
+        android:background="#00000000"
+        android:hint="@string/description"
+        android:textAlignment="center"
+        android:textAllCaps="false"
+        android:textColor="@color/primary_text"
+        android:textSize="@dimen/_15sdp" />
 
-            <EditText
-                android:id="@+id/set_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_20sdp"
-                android:background="#00000000"
-                android:enabled="false"
-                android:inputType="text"
-                android:minHeight="48dp"
-                android:text="@string/welcome"
-                android:textColor="@color/primary_text"
-                android:textSize="@dimen/_18sdp"
-                android:textStyle="bold"
-                 />
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/buttonUpdate"
+        android:layout_width="164dp"
+        android:layout_height="78dp"
+        android:layout_below="@+id/set_description"
+        android:layout_marginTop="43dp"
+        android:layout_centerHorizontal="true"
+        android:text="@string/update"
+        android:textColor="#000000"
+        android:textSize="@dimen/_13sdp"
+        app:backgroundTint="#1E88E5"
+        app:cornerRadius="@dimen/_80sdp" />
 
-            <EditText
-                android:id="@+id/set_description"
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/_45sdp"
-                android:layout_marginTop="@dimen/_40sdp"
-                android:background="#00000000"
-                android:gravity="center"
-                android:hint="@string/description"
-                android:inputType="text"
-                android:paddingStart="@dimen/_16sdp"
-                android:paddingEnd="@dimen/_16sdp"
-                android:textColor="@color/primary_text"
-                android:textColorHint="#546E7A"
-                android:textSize="@dimen/_13sdp" />
-
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/buttonUpdate"
-                android:layout_width="164dp"
-                android:layout_height="78dp"
-                android:layout_marginTop="@dimen/_20sdp"
-                android:text="@string/update"
-                android:textColor="#000000"
-                android:textSize="@dimen/_13sdp"
-                app:backgroundTint="#1E88E5"
-                app:cornerRadius="@dimen/_80sdp" />
-
-        </LinearLayout>
-    </ScrollView>
-</LinearLayout>
+</RelativeLayout>

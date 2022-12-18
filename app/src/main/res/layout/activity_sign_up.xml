@@ -32,7 +32,6 @@
             android:textStyle="bold" />
 
 
-
         <EditText
             android:id="@+id/inputName"
             android:layout_width="match_parent"
