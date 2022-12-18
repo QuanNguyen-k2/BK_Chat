@@ -14,14 +14,13 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
 
 public class SignInActivity extends AppCompatActivity {
 
     Button signInButton;
     EditText userEmail, userPassword;
-    TextView signUp;
+    TextView signUp,forgotPassword;
 
     FirebaseAuth auth;
 
@@ -37,6 +36,8 @@ public class SignInActivity extends AppCompatActivity {
     private void listener() {
         signUp.setOnClickListener(v -> sendUserToSignUp());
         signInButton.setOnClickListener(v -> signIn());
+        forgotPassword.setOnClickListener(v->sendUserToForgotPassword());
+
     }
 
     private void signIn() {
@@ -76,8 +77,10 @@ public class SignInActivity extends AppCompatActivity {
         userEmail = findViewById(R.id.inputEmail);
         userPassword = findViewById(R.id.inputPassword);
         signUp = findViewById(R.id.textSignUp);
+        forgotPassword=findViewById(R.id.textForgotPassWord);
 
         auth = FirebaseAuth.getInstance();
+
     }
 
     private void sendUserToMainAc() {
@@ -90,5 +93,9 @@ public class SignInActivity extends AppCompatActivity {
     private void sendUserToSignUp() {
         Intent register = new Intent(SignInActivity.this, SignUpActivity.class);
         startActivity(register);
+    }
+    private void sendUserToForgotPassword(){
+        Intent forgot = new Intent(SignInActivity.this, ForgotPasswordActivity.class);
+        startActivity(forgot);
     }
 }

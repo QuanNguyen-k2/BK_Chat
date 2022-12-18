@@ -290,7 +290,6 @@ public class RequestsFragment extends Fragment {
         recyclerView = requestsView.findViewById(R.id.chat_requests_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-
         usersRef = FirebaseDatabase.getInstance().getReference().child("Users");
         requestsRef = FirebaseDatabase.getInstance().getReference().child("Chat Requests");
         getAllRequests();
