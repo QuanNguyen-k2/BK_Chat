@@ -187,7 +187,7 @@ public class RequestsFragment extends Fragment {
                                         });
                                     } else if (type.equals("sent")) {
                                         Button btn_request_send = holder.itemView.findViewById(R.id.request_accept_btn);
-                                        btn_request_send.setText("sent");
+                                        btn_request_send.setText("huy yeu cau");
 
                                         holder.itemView.findViewById(R.id.request_cancel_btn).setVisibility(View.INVISIBLE);
 
