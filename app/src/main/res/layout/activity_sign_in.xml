@@ -90,7 +90,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_20sdp"
-            android:text="Forgot Password ? "
+            android:text="@string/forgot_password"
             android:textColor="@color/primary"
             android:textSize="@dimen/_14sdp"
             android:textStyle="bold" />

@@ -11,8 +11,6 @@ import androidx.viewpager.widget.ViewPager;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -23,7 +21,6 @@ public class MainActivity extends AppCompatActivity {
 
     FirebaseUser currentUser;
     FirebaseAuth auth;
-    DatabaseReference rootRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,7 +58,6 @@ public class MainActivity extends AppCompatActivity {
     private void khoiTao() {
         auth = FirebaseAuth.getInstance();
         currentUser = auth.getCurrentUser();
-        rootRef= FirebaseDatabase.getInstance().getReference();
 
         toolbar = findViewById(R.id.toolBar);
         toolbar.inflateMenu(R.menu.option_menu);
@@ -73,33 +69,20 @@ public class MainActivity extends AppCompatActivity {
         viewPager.setAdapter(tabAccessorAdapter);
 
         tabLayout.setupWithViewPager(viewPager);
+        setupTabIcons();
     }
-
+    private void setupTabIcons() {
+        tabLayout.getTabAt(0).setIcon(R.drawable.baseline_question_answer_white_18);
+        tabLayout.getTabAt(1).setIcon(R.drawable.baseline_people_white_18);
+        tabLayout.getTabAt(2).setIcon(R.drawable.baseline_group_add_white_18);
+    }
     @Override
     protected void onStart() {
         super.onStart();
         if (currentUser == null) {
             sendUserToLogin();
         }
-        else{
-            //verifyUser();
-        }
     }
-
-//    private void verifyUser() {
-//        String uid=auth.getCurrentUser().getUid();
-//        rootRef.child(uid).addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                if()
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError error) {
-//
-//            }
-//        });
-//    }
 
     private void sendUserToLogin() {
         Intent login = new Intent(MainActivity.this, SignInActivity.class);
