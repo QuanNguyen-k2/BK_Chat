@@ -2,6 +2,7 @@ package com.chatapp.bkchat;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -65,8 +66,6 @@ public class ProfileActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         setTitle("");
         RetrieveUserInfo();
-
-
     }
 
 
@@ -295,5 +294,12 @@ public class ProfileActivity extends AppCompatActivity {
 
                     }
                 });
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            onBackPressed(); // close this activity and return to preview activity (if there is any)
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

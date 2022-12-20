@@ -1,19 +1,20 @@
 package com.chatapp.bkchat;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-
 import android.content.Context;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -26,9 +27,8 @@ import com.squareup.picasso.Picasso;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ChatActivity extends AppCompatActivity
-{
-    private  String messageReceiverID, messageReceiverName,messageReceiverImage,messengerSenderId;
+public class ChatActivity extends AppCompatActivity {
+    private String messageReceiverID, messageReceiverName, messageReceiverImage, messengerSenderId;
     private TextView userName, userLastSeen;
     private RoundedImageView userImage;
     private Toolbar ChatToolbar;
@@ -39,13 +39,12 @@ public class ChatActivity extends AppCompatActivity
     private EditText MessageInputText;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
 
 
-        mAuth= FirebaseAuth.getInstance();
+        mAuth = FirebaseAuth.getInstance();
         messengerSenderId = mAuth.getCurrentUser().getUid();
         RootRef = FirebaseDatabase.getInstance().getReference();
 
@@ -54,13 +53,11 @@ public class ChatActivity extends AppCompatActivity
         messageReceiverImage = getIntent().getExtras().get("visit_image").toString();
 
 
-
         IntializeControllers();
 
         userName.setText(messageReceiverName);
         // userLastSeen.setText(messagernReceiverId);
         Picasso.get().load(messageReceiverImage).placeholder(R.drawable.profile_image).into(userImage);
-
 
 
         SendMessageButton.setOnClickListener(new View.OnClickListener() {
@@ -71,15 +68,11 @@ public class ChatActivity extends AppCompatActivity
         });
 
 
-
-
-
     }
 
-    private void IntializeControllers()
-    {
+    private void IntializeControllers() {
 
-        ChatToolbar = (Toolbar) findViewById(R.id.chat_toolbar);
+        ChatToolbar = findViewById(R.id.chat_toolbar);
         setSupportActionBar(ChatToolbar);
 
         ActionBar actionBar = getSupportActionBar();
@@ -98,23 +91,19 @@ public class ChatActivity extends AppCompatActivity
         SendMessageButton = (ImageButton) findViewById(R.id.send_message_btn);
         MessageInputText = (EditText) findViewById(R.id.input_message);
 
-
-
-
-
     }
+
     //gởi tin nhắn kiểu text
-    private void SendMessenger(){
+    private void SendMessenger() {
         String messengerText = MessageInputText.getText().toString();
 
-        if(TextUtils.isEmpty(messengerText)){
+        if (TextUtils.isEmpty(messengerText)) {
             Toast.makeText(this, "Text your message..!", Toast.LENGTH_SHORT).show();
-        }
-        else {
-            String messengerSenderRef = "Messages/" + messengerSenderId +"/" + messageReceiverID;
-            String messengerReceiverRef = "Messages/" + messageReceiverID +"/" + messengerSenderId;
+        } else {
+            String messengerSenderRef = "Messages/" + messengerSenderId + "/" + messageReceiverID;
+            String messengerReceiverRef = "Messages/" + messageReceiverID + "/" + messengerSenderId;
 
-            DatabaseReference userMessengerKeyRef =RootRef.child("Messages")
+            DatabaseReference userMessengerKeyRef = RootRef.child("Messages")
                     .child(messengerSenderId).child(messengerSenderId).push();
 
             String messagePushId = userMessengerKeyRef.getKey();
@@ -131,17 +120,12 @@ public class ChatActivity extends AppCompatActivity
             messengerBodyDetails.put(messengerSenderRef + "/" + messagePushId, messengerTextBody);
             messengerBodyDetails.put(messengerReceiverRef + "/" + messagePushId, messengerTextBody);
 
-            RootRef.updateChildren(messengerBodyDetails).addOnCompleteListener(new OnCompleteListener()
-            {
+            RootRef.updateChildren(messengerBodyDetails).addOnCompleteListener(new OnCompleteListener() {
                 @Override
-                public void onComplete(@NonNull Task task)
-                {
-                    if(task.isSuccessful())
-                    {
+                public void onComplete(@NonNull Task task) {
+                    if (task.isSuccessful()) {
                         Toast.makeText(ChatActivity.this, "Your message has been sent!", Toast.LENGTH_SHORT).show();
-                    }
-                    else
-                    {
+                    } else {
                         Toast.makeText(ChatActivity.this, "Error", Toast.LENGTH_SHORT).show();
                     }
                     MessageInputText.setText("");
@@ -150,7 +134,15 @@ public class ChatActivity extends AppCompatActivity
 
         }
     }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // handle arrow click here
+        if (item.getItemId() == android.R.id.home) {
+            finish(); // close this activity and return to preview activity (if there is any)
+        }
 
+        return super.onOptionsItemSelected(item);
+    }
 
 
 }
