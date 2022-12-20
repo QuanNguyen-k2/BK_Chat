@@ -25,4 +25,5 @@
     <string name="please_click_the_link_in_your_email_to_create_new_password">Please click the link in your email to create new password !</string>
     <string name="forgot_your_password">Forgot Your Password</string>
     <string name="email_incorrect">Email Incorrect !</string>
+    <string name="send">Send</string>
 </resources>
