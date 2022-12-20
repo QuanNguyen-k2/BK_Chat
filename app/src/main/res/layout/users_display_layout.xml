@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
@@ -12,26 +11,24 @@
         android:layout_marginTop="5dp"
         android:layout_marginEnd="10dp"
         android:layout_marginBottom="3dp"
-        android:orientation="horizontal"
         android:background="@drawable/border"
-        >
+        android:orientation="horizontal">
 
         <com.makeramen.roundedimageview.RoundedImageView
             android:id="@+id/users_profile_image"
             android:layout_width="90dp"
             android:layout_height="90dp"
+            android:padding="@dimen/_5sdp"
             android:scaleType="centerCrop"
             android:src="@drawable/image_user"
-            android:padding="@dimen/_5sdp"
             app:riv_oval="true" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingLeft="@dimen/_15sdp"
-            android:paddingTop="@dimen/_10sdp"
             android:orientation="vertical"
-            >
+            android:paddingLeft="@dimen/_15sdp"
+            android:paddingTop="@dimen/_10sdp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -52,7 +49,7 @@
                     android:layout_width="18dp"
                     android:layout_height="18dp"
                     android:layout_marginTop="5dp"
-                    android:src="@drawable/online"
+                    android:background="@drawable/background_image"
                     android:visibility="invisible" />
 
             </LinearLayout>
@@ -62,37 +59,36 @@
                 android:id="@+id/user_status"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="user status"
-                android:singleLine="true"
                 android:paddingTop="@dimen/_5sdp"
+                android:singleLine="true"
+                android:text="user status"
                 android:textAlignment="textStart"
-                android:textSize="16sp"
-                />
+                android:textSize="16sp" />
+
             <LinearLayout
                 android:id="@+id/hide_layout_accept"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:visibility="gone"
-                >
+                android:visibility="gone">
+
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/request_accept_btn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Accept"
                     android:layout_marginStart="@dimen/_5sdp"
-                    android:textSize="12sp"
-                    android:textAllCaps="false"
+                    android:text="Accept"
                     android:textAlignment="center"
-                    />
+                    android:textAllCaps="false"
+                    android:textSize="12sp" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/request_cancel_btn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_15sdp"
                     android:text="Cancel"
                     android:textAlignment="center"
-                    android:layout_marginStart="@dimen/_15sdp"
                     android:textAllCaps="false"
                     android:textSize="12sp" />
 
