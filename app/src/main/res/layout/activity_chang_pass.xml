@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/changePassword_layout"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -129,9 +130,21 @@
                 android:background="@drawable/ic_visibility" />
         </RelativeLayout>
 
+        <TextView
+            android:id="@+id/text_warning"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:textColor="#E53935"
+            android:textSize="@dimen/_14sdp"
+            android:textStyle="bold"
+            android:text="Warning"
+            android:textAlignment="center"
+            android:visibility="gone"
+            />
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/buttonSignUp"
+            android:id="@+id/buttonChange"
             android:layout_width="252dp"
             android:layout_height="67dp"
             android:layout_marginTop="@dimen/_15sdp"

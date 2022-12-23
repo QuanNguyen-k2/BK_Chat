@@ -35,20 +35,20 @@
 
     <ImageView
         android:id="@+id/message_sender_image_view"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="@dimen/_135sdp"
+        android:layout_height="@dimen/_120sdp"
         android:layout_alignParentEnd="true"
         android:layout_marginStart="5dp"
 
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="13dp"
         android:layout_marginEnd="5dp"
         android:layout_marginBottom="5dp"
         android:scaleType="centerCrop" />
 
     <ImageView
         android:id="@+id/message_receiver_image_view"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="@dimen/_135sdp"
+        android:layout_height="@dimen/_120sdp"
         android:layout_alignParentStart="true"
         android:layout_marginStart="55dp"
 
@@ -58,20 +58,20 @@
         android:scaleType="centerCrop" />
     <ImageView
         android:id="@+id/message_sender_file_view"
-        android:layout_width="60dp"
-        android:layout_height="50dp"
+        android:layout_width="@dimen/_80sdp"
+        android:layout_height="@dimen/_75sdp"
         android:layout_alignParentEnd="true"
         android:layout_marginStart="5dp"
 
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="13dp"
         android:layout_marginEnd="5dp"
         android:layout_marginBottom="5dp"
         android:scaleType="centerCrop" />
 
     <ImageView
         android:id="@+id/message_receiver_file_view"
-        android:layout_width="60dp"
-        android:layout_height="50dp"
+        android:layout_width="@dimen/_80sdp"
+        android:layout_height="@dimen/_75sdp"
         android:layout_alignParentStart="true"
         android:layout_marginStart="55dp"
 

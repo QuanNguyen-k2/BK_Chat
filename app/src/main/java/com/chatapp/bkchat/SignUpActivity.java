@@ -118,6 +118,10 @@ public class SignUpActivity extends AppCompatActivity {
             showToast("Enter your password");
             return false;
         }
+        else if(userPassword.getText().toString().trim().length()<8){
+            showToast("Passwords Must Be At Least 8 Characters Long");
+            return false;
+        }
         else if(!userPasswordConfirm.getText().toString().equals(userPassword.getText().toString())){
             showToast("Password & confirm password must be same");
             return false;

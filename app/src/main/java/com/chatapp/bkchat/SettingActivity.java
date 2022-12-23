@@ -1,6 +1,5 @@
 package com.chatapp.bkchat;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Rect;
@@ -19,9 +18,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -30,7 +26,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.squareup.picasso.Picasso;
 
@@ -53,9 +48,7 @@ public class SettingActivity extends AppCompatActivity {
     String path;
     static boolean firstCheck;
     //image profile
-    private static final int GalleryPick = 1;
-    private StorageReference UserImageReference;
-    private ProgressDialog loadingBar;
+
 
 
     @Override
@@ -82,6 +75,8 @@ public class SettingActivity extends AppCompatActivity {
         });
         changePass.setOnClickListener(v -> {
             Intent changePass = new Intent(SettingActivity.this, ChangePassActivity.class );
+            changePass.putExtra("name", name.getText().toString());
+            changePass.putExtra("uid", uid);
             startActivity(changePass);
         });
     }

@@ -89,8 +89,7 @@ public class ChatActivity extends AppCompatActivity {
         InitializeControllers();
 
         userName.setText(messageReceiverName);
-        // userLastSeen.setText(messagernReceiverId);
-        Picasso.get().load(messageReceiverImage).placeholder(R.drawable.image_user).into(userImage);
+        Picasso.get().load(messageReceiverImage).placeholder(R.drawable.profile_image).into(userImage);
 
 
         SendMessageButton.setOnClickListener(new View.OnClickListener() {
@@ -245,22 +244,7 @@ public class ChatActivity extends AppCompatActivity {
                                 RootRef.updateChildren(messengerBodyDetails);
                                 loadingBar.dismiss();
                             });
-//                            Map messengerTextBody = new HashMap();
-//                            messengerTextBody.put("message", myUrl);
-//                            messengerTextBody.put("type", checker);
-//                            messengerTextBody.put("from", messengerSenderId);
-//                            messengerTextBody.put("to", messageReceiverID);
-//                            messengerTextBody.put("messageID", messagePushId);
-//                            messengerTextBody.put("name", fileUri.getLastPathSegment());
-//                            messengerTextBody.put("date",saveCurrentDate);
-//                            messengerTextBody.put("time", saveCurrentTime);
-//
-//                            Map messengerBodyDetails = new HashMap();
-//                            messengerBodyDetails.put(messengerSenderRef + "/" + messagePushId, messengerTextBody);
-//                            messengerBodyDetails.put(messengerReceiverRef + "/" + messagePushId, messengerTextBody);
-//
-//                            RootRef.updateChildren(messengerBodyDetails);
-//                            loadingBar.dismiss();
+
                         }
 
                     }
@@ -383,6 +367,7 @@ public class ChatActivity extends AppCompatActivity {
         RootRef.child("Messages").child(messengerSenderId).child(messageReceiverID).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                messagesList.clear();
                 for (DataSnapshot data : snapshot.getChildren()) {
                     Messages messages = data.getValue(Messages.class);
                     if (!messagesList.stream().anyMatch(m -> m.getMessageID() == messages.getMessageID())) {
@@ -399,55 +384,7 @@ public class ChatActivity extends AppCompatActivity {
             }
         });
 
-//        RootRef.child("Messages").child(messengerSenderId).child(messageReceiverID)
-//                .addChildEventListener(new ChildEventListener() {
-//                    @Override
-//                    public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-//                        Messages messages = snapshot.getValue(Messages.class);
-//                        if (!messagesList.stream().anyMatch(m -> m.getMessageID() == messages.getMessageID())) {
-//                            messagesList.add(messages);
-//                        }
-//                        messagesAdapter.notifyDataSetChanged();
-//                        userMessagesList.smoothScrollToPosition(userMessagesList.getAdapter().getItemCount());
-//
-//                    }
-//
-//                    @Override
-//                    public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-//                        Messages messages = snapshot.getValue(Messages.class);
-//                        if (!messagesList.stream().anyMatch(m -> m.getMessageID() == messages.getMessageID())) {
-//                            messagesList.add(messages);
-//                        }
-//                        messagesAdapter.notifyDataSetChanged();
-//                        userMessagesList.smoothScrollToPosition(userMessagesList.getAdapter().getItemCount());
-//
-//                    }
-//
-//                    @Override
-//                    public void onChildRemoved(@NonNull DataSnapshot snapshot) {
-//                        Messages messages = snapshot.getValue(Messages.class);
-//                        if (!messagesList.stream().anyMatch(m -> m.getMessageID() == messages.getMessageID())) {
-//                            messagesList.add(messages);
-//                        }
-//                        messagesAdapter.notifyDataSetChanged();
-//                        userMessagesList.smoothScrollToPosition(userMessagesList.getAdapter().getItemCount());
-//                    }
-//
-//                    @Override
-//                    public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-//                        Messages messages = snapshot.getValue(Messages.class);
-//                        if (!messagesList.stream().anyMatch(m -> m.getMessageID() == messages.getMessageID())) {
-//                            messagesList.add(messages);
-//                        }
-//                        messagesAdapter.notifyDataSetChanged();
-//                        userMessagesList.smoothScrollToPosition(userMessagesList.getAdapter().getItemCount());
-//                    }
-//
-//                    @Override
-//                    public void onCancelled(@NonNull DatabaseError error) {
-//
-//                    }
-//                });
+
     }
 
     //gởi tin nhắn kiểu text
