@@ -9,7 +9,7 @@
         android:id="@+id/message_profile_image"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:layout_marginLeft="2dp"
+        android:layout_marginStart="2dp"
         android:layout_marginTop="10dp"
         android:scaleType="centerCrop"
         android:src="@drawable/image_user"
@@ -61,9 +61,7 @@
         android:layout_alignParentEnd="true"
         android:layout_marginTop="15dp"
         android:layout_marginRight="5dp"
-        android:scaleType="centerCrop">
-
-    </androidx.appcompat.widget.AppCompatImageView>
+        android:scaleType="centerCrop"/>
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/receiver_message_image"
@@ -72,9 +70,7 @@
         android:layout_alignParentStart="true"
         android:layout_marginStart="55dp"
         android:layout_marginTop="15dp"
-        android:scaleType="centerCrop">
-
-    </androidx.appcompat.widget.AppCompatImageView>
+        android:scaleType="centerCrop"/>
 
     <TextView
         android:id="@+id/sender_message_text"
@@ -83,12 +79,12 @@
         android:layout_alignParentTop="@+id/receiver_message_text"
         android:layout_alignParentEnd="true"
         android:layout_marginTop="15dp"
-        android:layout_marginRight="4dp"
+        android:layout_marginEnd="4dp"
         android:background="@drawable/sender_messenger_layout"
         android:padding="10dp"
+        android:textColor="@color/primary_text"
         android:text="Send messenger"
         android:textSize="15sp"
         android:textStyle="bold">
-
     </TextView>
 </RelativeLayout>

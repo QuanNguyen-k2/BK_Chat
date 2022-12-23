@@ -8,7 +8,7 @@
 
     <include
         android:id="@+id/toolbar_setting"
-        layout="@layout/layout_toolbar"></include>
+        layout="@layout/layout_toolbar" />
 
     <ImageView
         android:id="@+id/image_cover"
@@ -16,8 +16,7 @@
         android:layout_height="@dimen/_150sdp"
         android:layout_marginTop="@dimen/_50sdp"
         android:scaleType="fitXY"
-        android:src="@drawable/profile_image"
-        />
+        android:src="@drawable/profile_image" />
 
     <com.makeramen.roundedimageview.RoundedImageView
         android:id="@+id/yourAvatar"
@@ -39,8 +38,8 @@
         android:layout_below="@+id/yourAvatar"
         android:layout_marginTop="10dp"
         android:background="#00000000"
-        android:text="Username"
         android:enabled="false"
+        android:text="Username"
         android:textAlignment="center"
         android:textAllCaps="false"
         android:textColor="@color/primary_text"
@@ -49,28 +48,45 @@
 
     <EditText
         android:id="@+id/set_description"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/set_name"
         android:layout_marginTop="10dp"
         android:background="#00000000"
         android:hint="@string/description"
+        android:maxLines="4"
         android:textAlignment="center"
         android:textAllCaps="false"
         android:textColor="@color/primary_text"
         android:textSize="@dimen/_15sdp" />
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/buttonUpdate"
-        android:layout_width="164dp"
-        android:layout_height="78dp"
-        android:layout_below="@+id/set_description"
-        android:layout_marginTop="43dp"
+    <TextView
+        android:id="@+id/changePass"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:text="@string/update"
-        android:textColor="#000000"
-        android:textSize="@dimen/_13sdp"
-        app:backgroundTint="#1E88E5"
-        app:cornerRadius="@dimen/_80sdp" />
+        android:layout_marginBottom="@dimen/_15sdp"
+        android:layout_gravity="bottom"
+        android:text="@string/change_name_or_password"
+        android:textColor="@color/primary"
+        android:textSize="@dimen/_14sdp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/buttonUpdate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/set_description"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/_7sdp"
+        android:text="Save"
+        android:textColor="@color/primary"
+        android:textSize="@dimen/_15sdp"
+        android:textStyle="bold"
+        android:visibility="gone" />
+
 
 </RelativeLayout>

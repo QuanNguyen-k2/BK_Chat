@@ -1,7 +1,8 @@
 package com.chatapp.bkchat;
 
 
-import android.app.AlertDialog;
+import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -100,21 +101,24 @@ public class RequestsFragment extends Fragment {
                 new FirebaseRecyclerAdapter<Contacts, RequestsViewHolder>(options) {
                     @Override
                     protected void onBindViewHolder(@NonNull final RequestsViewHolder holder, int position, @NonNull Contacts model) {
-                        holder.itemView.findViewById(R.id.request_accept_btn).setVisibility(View.VISIBLE);
-                        holder.itemView.findViewById(R.id.request_cancel_btn).setVisibility(View.VISIBLE);
-
-                        final String list_user_id = getRef(position).getKey();
+                        final String uid = getRef(position).getKey();
+                        holder.itemView.setOnClickListener(v -> {
+                            Intent profileIntent = new Intent(getContext(), ProfileActivity.class);
+                            profileIntent.putExtra("visit_user_id", uid);
+                            getContext().startActivity(profileIntent);
+                        });
 
                         DatabaseReference getTypeRef = getRef(position).child("request_type").getRef();
 
                         getTypeRef.addValueEventListener(new ValueEventListener() {
+                            @SuppressLint("SetTextI18n")
                             @Override
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                 if (dataSnapshot.exists()) {
                                     String type = dataSnapshot.getValue().toString();
 
                                     if (type.equals("received")) {
-                                        UsersRef.child(list_user_id).addValueEventListener(new ValueEventListener() {
+                                        UsersRef.child(uid).addValueEventListener(new ValueEventListener() {
                                             @Override
                                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                                 if (dataSnapshot.hasChild("image")) {
@@ -122,62 +126,10 @@ public class RequestsFragment extends Fragment {
                                                     Picasso.get().load(requestProfileImage).into(holder.profileImage);
                                                 }
                                                 final String requestUserName = dataSnapshot.child("username").getValue().toString();
-
                                                 holder.userName.setText(requestUserName);
-                                                holder.userStatus.setText("Want add friends with you!");
-
-                                                holder.itemView.setOnClickListener(view -> {
-                                                    CharSequence options1[] = new CharSequence[]{
-                                                            "Accept",
-                                                            "Cancel"
-                                                    };
-                                                    AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-                                                    builder.setTitle(requestUserName + "Chat Request");
-                                                    builder.setItems(options1, (dialogInterface, i) -> {
-                                                        if (i == 0) {
-                                                            ContactsRef.child(currentUserID).child(list_user_id).child("Contacts")
-                                                                    .setValue("Saved").addOnCompleteListener(task -> {
-                                                                        if (task.isSuccessful()) {
-                                                                            ContactsRef.child(list_user_id).child(currentUserID).child("Contacts")
-                                                                                    .setValue("Saved").addOnCompleteListener(task1 -> {
-                                                                                        if (task1.isSuccessful()) {
-                                                                                            ChatRequestsRef.child(currentUserID).child(list_user_id)
-                                                                                                    .removeValue()
-                                                                                                    .addOnCompleteListener(task11 -> {
-                                                                                                        if (task11.isSuccessful()) {
-                                                                                                            ChatRequestsRef.child(list_user_id).child(currentUserID)
-                                                                                                                    .removeValue()
-                                                                                                                    .addOnCompleteListener(task111 -> {
-                                                                                                                        if (task111.isSuccessful()) {
-                                                                                                                            Toast.makeText(getContext(), "New Contacts Saved", Toast.LENGTH_SHORT).show();
-                                                                                                                        }
-                                                                                                                    });
-                                                                                                        }
-                                                                                                    });
-                                                                                        }
-                                                                                    });
-                                                                        }
-                                                                    });
-                                                        }
-
-                                                        if (i == 1) {
-                                                            ChatRequestsRef.child(currentUserID).child(list_user_id)
-                                                                    .removeValue()
-                                                                    .addOnCompleteListener(task -> {
-                                                                        if (task.isSuccessful()) {
-                                                                            ChatRequestsRef.child(list_user_id).child(currentUserID)
-                                                                                    .removeValue()
-                                                                                    .addOnCompleteListener(task12 -> {
-                                                                                        if (task12.isSuccessful()) {
-                                                                                            Toast.makeText(getContext(), "Contacts is Denied", Toast.LENGTH_SHORT).show();
-                                                                                        }
-                                                                                    });
-                                                                        }
-                                                                    });
-                                                        }
-                                                    });
-                                                    builder.show();
-                                                });
+                                                holder.userStatus.setText("Want to add friend with you!");
+                                                handleAcceptRequest(holder, uid);
+                                                handleDeleteRequest(holder, uid);
                                             }
 
                                             @Override
@@ -186,48 +138,20 @@ public class RequestsFragment extends Fragment {
                                             }
                                         });
                                     } else if (type.equals("sent")) {
-                                        Button btn_request_send = holder.itemView.findViewById(R.id.request_accept_btn);
-                                        btn_request_send.setText("huy yeu cau");
 
-                                        holder.itemView.findViewById(R.id.request_cancel_btn).setVisibility(View.INVISIBLE);
-
-                                        UsersRef.child(list_user_id).addValueEventListener(new ValueEventListener() {
+                                        holder.AcceptButton.setText(R.string.cancel_request);
+                                        holder.AcceptButton.getLayoutParams().width = ViewGroup.LayoutParams.MATCH_PARENT;
+                                        holder.CancelButton.setVisibility(View.GONE);
+                                        UsersRef.child(uid).addValueEventListener(new ValueEventListener() {
                                             @Override
                                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                                final String requestUserName = dataSnapshot.child("username").getValue().toString();
                                                 if (dataSnapshot.hasChild("image")) {
                                                     final String requestProfileImage = dataSnapshot.child("image").getValue().toString();
-
                                                     Picasso.get().load(requestProfileImage).into(holder.profileImage);
                                                 }
-                                                final String requestUserName = dataSnapshot.child("username").getValue().toString();
-
-                                                holder.userName.setText(requestUserName);
-                                                holder.userStatus.setText("You have send request to " + requestUserName);
-
-                                                holder.itemView.setOnClickListener(view -> {
-                                                    CharSequence options12[] = new CharSequence[]{
-                                                            "Cancel"
-                                                    };
-                                                    AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-                                                    builder.setTitle("Sent");
-
-                                                    builder.setItems(options12, (dialogInterface, i) -> {
-                                                        if (i == 0) {
-                                                            ChatRequestsRef.child(currentUserID).child(list_user_id).removeValue().addOnCompleteListener(task -> {
-                                                                if (task.isSuccessful()) {
-                                                                    ChatRequestsRef.child(list_user_id).child(currentUserID).removeValue().addOnCompleteListener(task13 -> {
-                                                                        if (task13.isSuccessful()) {
-                                                                            Toast.makeText(getContext(), "Cancelled request", Toast.LENGTH_SHORT).show();
-                                                                        }
-                                                                    });
-                                                                }
-                                                            });
-                                                        }
-                                                    });
-                                                    builder.show();
-                                                });
+                                                handleHolderSendRequest(holder, requestUserName, uid);
                                             }
-
 
                                             @Override
                                             public void onCancelled(@NonNull DatabaseError databaseError) {
@@ -236,6 +160,7 @@ public class RequestsFragment extends Fragment {
                                         });
                                     }
                                 }
+
                             }
 
                             @Override
@@ -256,6 +181,61 @@ public class RequestsFragment extends Fragment {
         adapter.startListening();
     }
 
+    private void handleHolderSendRequest(RequestsViewHolder holder, String requestUserName, String uid) {
+        holder.userName.setText(requestUserName);
+        holder.userStatus.setText("You have send request to " + requestUserName);
+        holder.AcceptButton.setOnClickListener(v -> {
+            {
+                ChatRequestsRef.child(currentUserID).child(uid).removeValue().addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        ChatRequestsRef.child(uid).child(currentUserID).removeValue().addOnCompleteListener(task13 -> {
+                            if (task13.isSuccessful()) {
+                                Toast.makeText(getContext(), "Cancelled request", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+                });
+            }
+        });
+
+    }
+
+    private void handleAcceptRequest(RequestsViewHolder holder, String uid) {
+        holder.AcceptButton.setOnClickListener(v -> {
+            ContactsRef.child(currentUserID).child(uid).child("Contacts").setValue("Saved").addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    ContactsRef.child(uid).child(currentUserID).child("Contacts").setValue("Saved").addOnCompleteListener(task1 -> {
+                        if (task1.isSuccessful()) {
+                            ChatRequestsRef.child(currentUserID).child(uid).removeValue().addOnCompleteListener(task11 -> {
+                                if (task11.isSuccessful()) {
+                                    ChatRequestsRef.child(uid).child(currentUserID).removeValue().addOnCompleteListener(task111 -> {
+                                        if (task111.isSuccessful()) {
+                                            Toast.makeText(getContext(), "New Contacts Saved", Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+                                }
+                            });
+                        }
+                    });
+                }
+            });
+        });
+    }
+
+    private void handleDeleteRequest(RequestsViewHolder holder, String uid) {
+        holder.CancelButton.setOnClickListener(v -> {
+            ChatRequestsRef.child(currentUserID).child(uid).removeValue().addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    ChatRequestsRef.child(uid).child(currentUserID).removeValue().addOnCompleteListener(task12 -> {
+                        if (task12.isSuccessful()) {
+                            Toast.makeText(getContext(), "Contacts is Denied", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+            });
+        });
+    }
+
     public static class RequestsViewHolder extends RecyclerView.ViewHolder {
         TextView userName, userStatus;
         RoundedImageView profileImage;
@@ -270,7 +250,7 @@ public class RequestsFragment extends Fragment {
             profileImage = itemView.findViewById(R.id.users_profile_image);
             AcceptButton = itemView.findViewById(R.id.request_accept_btn);
             CancelButton = itemView.findViewById(R.id.request_cancel_btn);
-            acceptLayout=itemView.findViewById(R.id.hide_layout_accept);
+            acceptLayout = itemView.findViewById(R.id.hide_layout_accept);
             acceptLayout.setVisibility(View.VISIBLE);
         }
     }

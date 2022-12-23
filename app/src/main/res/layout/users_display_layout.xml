@@ -11,7 +11,6 @@
         android:layout_marginTop="5dp"
         android:layout_marginEnd="10dp"
         android:layout_marginBottom="3dp"
-        android:background="@drawable/border"
         android:orientation="horizontal">
 
         <com.makeramen.roundedimageview.RoundedImageView
@@ -39,7 +38,7 @@
                     android:id="@+id/user_profile_name"
                     android:layout_width="200dp"
                     android:layout_height="match_parent"
-                    android:text="user name"
+                    android:text="@string/your_name"
                     android:textAlignment="textStart"
                     android:textSize="18sp"
                     android:textStyle="bold" />
@@ -61,7 +60,7 @@
                 android:layout_height="match_parent"
                 android:paddingTop="@dimen/_5sdp"
                 android:singleLine="true"
-                android:text="user status"
+                android:text="@string/description"
                 android:textAlignment="textStart"
                 android:textSize="16sp" />
 
@@ -69,6 +68,7 @@
                 android:id="@+id/hide_layout_accept"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/_20sdp"
                 android:orientation="horizontal"
                 android:visibility="gone">
 
@@ -76,22 +76,27 @@
                     android:id="@+id/request_accept_btn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/_5sdp"
-                    android:text="Accept"
+                    android:text="@string/accept"
                     android:textAlignment="center"
                     android:textAllCaps="false"
-                    android:textSize="12sp" />
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    app:backgroundTint="@color/button"
+                    />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/request_cancel_btn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_15sdp"
-                    android:text="Cancel"
+                    android:text="@string/delete"
                     android:textAlignment="center"
                     android:textAllCaps="false"
-                    android:textSize="12sp" />
-
+                    android:textColor="@color/primary_text"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    app:backgroundTint="#F1EEEE"
+                   />
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

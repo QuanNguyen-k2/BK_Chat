@@ -3,12 +3,15 @@ package com.chatapp.bkchat;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.MotionEvent;
+import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -35,7 +38,8 @@ import com.squareup.picasso.Picasso;
 public class SettingActivity extends AppCompatActivity {
     private static final int SELECT_PICTURE = 1;
 
-    Button update;
+    TextView update;
+    TextView changePass;
     EditText name;
     EditText description;
     FirebaseAuth auth;
@@ -47,6 +51,7 @@ public class SettingActivity extends AppCompatActivity {
     Uri selectedImageUri;
     Toolbar mToolbar;
     String path;
+    static boolean firstCheck;
     //image profile
     private static final int GalleryPick = 1;
     private StorageReference UserImageReference;
@@ -61,16 +66,28 @@ public class SettingActivity extends AppCompatActivity {
         khoiTao();
         listener();
         retrieveUser();
+
+
     }
+
 
     private void listener() {
         update.setOnClickListener(v -> updateData());
         avatar.setOnClickListener(v -> selectImage("ImageProfile"));
         coverImage.setOnClickListener(v -> selectImage("ImageCover"));
+        description.setOnFocusChangeListener((v, hasFocus) -> {
+            if(!hasFocus){
+                update.setVisibility(View.VISIBLE);
+            }
+        });
+        changePass.setOnClickListener(v -> {
+            Intent changePass = new Intent(SettingActivity.this, ChangePassActivity.class );
+            startActivity(changePass);
+        });
     }
 
     private void selectImage(String type) {
-        path=type;
+        path = type;
         Intent i = new Intent();
         i.setType("image/*");
         i.setAction(Intent.ACTION_GET_CONTENT);
@@ -78,7 +95,7 @@ public class SettingActivity extends AppCompatActivity {
     }
 
     private void updateData() {
-        description.clearFocus();
+        update.setVisibility(View.GONE);
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(description.getWindowToken(), 0);
 
@@ -90,13 +107,27 @@ public class SettingActivity extends AppCompatActivity {
             rootRef.child("Users").child(uid).child("description").setValue(newDescription);
             Toast.makeText(SettingActivity.this, "Update Successful", Toast.LENGTH_SHORT).show();
         }
+
     }
 
     @Override
+    public boolean dispatchTouchEvent(MotionEvent event) {
+        if (event.getAction() == MotionEvent.ACTION_DOWN) {
+            View v = getCurrentFocus();
+            if ( v instanceof EditText) {
+                Rect outRect = new Rect();
+                v.getGlobalVisibleRect(outRect);
+                if (!outRect.contains((int)event.getRawX(), (int)event.getRawY())) {
+                    v.clearFocus();
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                }
+            }
+        }
+        return super.dispatchTouchEvent( event );
+    }
 
-
-
-
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
@@ -141,11 +172,12 @@ public class SettingActivity extends AppCompatActivity {
                     String retrieveDescription = snapshot.child("description").getValue().toString();
                     name.setText(retrieveName);
                     description.setText(retrieveDescription);
+                    firstCheck =true;
                     if (snapshot.hasChild("image")) {
                         String retrieveImage = snapshot.child("image").getValue().toString().trim();
                         Picasso.get().load(retrieveImage).into(avatar);
                     }
-                    if(snapshot.hasChild("coverImage")){
+                    if (snapshot.hasChild("coverImage")) {
                         String retrieveImage = snapshot.child("coverImage").getValue().toString().trim();
                         Picasso.get().load(retrieveImage).into(coverImage);
                     }
@@ -170,6 +202,7 @@ public class SettingActivity extends AppCompatActivity {
         rootRef = FirebaseDatabase.getInstance().getReference();
         storageRef = FirebaseStorage.getInstance().getReference();
         avatar = findViewById(R.id.yourAvatar);
+        changePass = findViewById(R.id.changePass);
 
         mToolbar = findViewById(R.id.toolbar_setting);
         setSupportActionBar(mToolbar);

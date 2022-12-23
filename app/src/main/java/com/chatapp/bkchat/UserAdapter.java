@@ -26,7 +26,6 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
 
     private Map<String, Contacts> listContacts;
     private Context context;
-    private  ContactFragment contactFragment;
     private List<String> listMyFriends;
 
     public UserAdapter(Map<String, Contacts> listContacts, Context context) {
@@ -34,10 +33,6 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
         this.context = context;
     }
 
-    public UserAdapter(List<String> myFriends, Context context) {
-        this.listMyFriends = myFriends;
-        this.context = context;
-    }
 
 
     @NonNull

@@ -3,7 +3,6 @@ package com.chatapp.bkchat;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -56,13 +55,16 @@ public class MainActivity extends AppCompatActivity {
                     return true;
                 }
                 case R.id.settings:{
-                    sendUserToSetting();
+                    sendUserToActivity(SettingActivity.class);
                     return true ;
                 }
                 case R.id.FindFriends:{
-                    sendUserToFindFriends();
+                    sendUserToActivity(FindFriendsActivity.class);
                     return true;
-
+                }
+                case R.id.qrCode:{
+                    sendUserToActivity(ScanQrActivity.class);
+                    return true;
                 }
                 default:
                     return false;
@@ -105,7 +107,6 @@ public class MainActivity extends AppCompatActivity {
         else
         {
             updateUserState("online");
-
             verifyUser();
         }
     }
@@ -141,10 +142,10 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if((dataSnapshot.child("username").exists())){
-                    Toast.makeText(MainActivity.this, "Welcome !", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(MainActivity.this, "Welcome !", Toast.LENGTH_SHORT).show();
                 }
                 else {
-                    sendUserToSetting();
+
                 }
             }
 
@@ -162,13 +163,10 @@ public class MainActivity extends AppCompatActivity {
         startActivity(login);
         finish();
     }
-    private void sendUserToSetting() {
-        Intent set = new Intent(MainActivity.this, SettingActivity.class);
-        startActivity(set);
-    }
-    private void sendUserToFindFriends() {
-        Intent find = new Intent(MainActivity.this, FindFriendsActivity.class);
-        startActivity(find);
+
+    private  void sendUserToActivity(Class<?> toActivity){
+        Intent activity = new Intent(MainActivity.this,toActivity );
+        startActivity(activity);
     }
 
 

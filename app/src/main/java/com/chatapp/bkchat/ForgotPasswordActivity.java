@@ -33,7 +33,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
     }
 
     private void listener() {
-        signIn.setOnClickListener(v->sendToUserSignIn());
+        signIn.setOnClickListener(v->finish());
         forgotPassword.setOnClickListener(v->forgotPassword());
         emailForgotPass.addTextChangedListener(new TextWatcher() {
             @Override
@@ -82,9 +82,6 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         }
     }
 
-    private void sendToUserSignIn() {
-        onBackPressed();
-    }
 
     private void khoiTao() {
         forgotPassword=findViewById(R.id.buttonForgotPassword);

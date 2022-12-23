@@ -30,6 +30,7 @@ public class FindFriendsActivity extends AppCompatActivity {
     private DatabaseReference usersRef;
     private Toolbar mToolbar;
     private EditText editText;
+    private String uid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +47,7 @@ public class FindFriendsActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
+        uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         usersRef = FirebaseDatabase.getInstance().getReference().child("Users");
         recyclerView = findViewById(R.id.find_friends_recycler_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -69,6 +71,9 @@ public class FindFriendsActivity extends AppCompatActivity {
             imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
             return true;
         }
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+        }
         return super.onOptionsItemSelected(item);
     }
 
@@ -77,7 +82,6 @@ public class FindFriendsActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 Map<String, Contacts> listContact = new HashMap<>();
-                String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
                 for (DataSnapshot data : snapshot.getChildren()) {
                     Contacts contacts = data.getValue(Contacts.class);
                     if (contacts.getUsername().toLowerCase().contains(text.toLowerCase()) && !data.getKey().toString().equals(uid)) {

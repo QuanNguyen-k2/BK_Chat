@@ -12,6 +12,11 @@
         app:showAsAction="never">
     </item>
     <item
+        android:id="@+id/qrCode"
+        android:title="@string/scan_qr"
+        app:showAsAction="never">
+    </item>
+    <item
         android:id="@+id/logOut"
         android:title="@string/log_out"
         app:showAsAction="never">

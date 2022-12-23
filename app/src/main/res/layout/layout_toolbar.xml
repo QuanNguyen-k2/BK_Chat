@@ -4,7 +4,7 @@
     android:id="@+id/toolBar"
     android:layout_width="match_parent"
     android:layout_height="@dimen/_50sdp"
-    android:background="#2966B8">
+    android:background="@color/toolbar">
 
     <TextView
         android:id="@+id/textSignIn"

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    tools:context=".ScanQrActivity">
+
+    <include
+        android:id="@+id/toolbar_setting"
+        layout="@layout/layout_toolbar"></include>
+
+    <ImageView
+        android:id="@+id/qrCode"
+        android:layout_width="@dimen/_270sdp"
+        android:layout_height="@dimen/_270sdp"
+        android:layout_marginTop="@dimen/_60sdp" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/buttonScan"
+        android:layout_width="252dp"
+        android:layout_height="67dp"
+        android:layout_marginTop="@dimen/_25sdp"
+        android:text="Scan Qr Code"
+        android:textColor="@color/white"
+        android:textSize="@dimen/_13sdp"
+        android:textStyle="bold"
+        app:backgroundTint="@color/button"
+        app:cornerRadius="@dimen/_8sdp" />
+
+</LinearLayout>
