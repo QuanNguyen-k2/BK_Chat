@@ -90,7 +90,7 @@ public class ChatActivity extends AppCompatActivity {
 
         userName.setText(messageReceiverName);
         // userLastSeen.setText(messagernReceiverId);
-        Picasso.get().load(messageReceiverImage).placeholder(R.drawable.profile_image).into(userImage);
+        Picasso.get().load(messageReceiverImage).placeholder(R.drawable.image_user).into(userImage);
 
 
         SendMessageButton.setOnClickListener(new View.OnClickListener() {

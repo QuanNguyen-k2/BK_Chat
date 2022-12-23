@@ -43,6 +43,7 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.Messag
         public TextView receiverMessengerText, senderMessengerText;
         public RoundedImageView receiverProfileImg;
         public ImageView receiverMessengerImage, senderMessengerImage;
+        public ImageView receiverMessengerFile, senderMessengerFile;
 
 
         public MessagesViewHolder(@NonNull View itemView) {
@@ -53,6 +54,8 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.Messag
             receiverProfileImg = (RoundedImageView) itemView.findViewById(R.id.message_profile_image);
             receiverMessengerImage = (ImageView) itemView.findViewById(R.id.message_receiver_image_view);
             senderMessengerImage = (ImageView) itemView.findViewById(R.id.message_sender_image_view);
+            receiverMessengerFile = (ImageView) itemView.findViewById(R.id.message_receiver_file_view);
+            senderMessengerFile = (ImageView) itemView.findViewById(R.id.message_sender_file_view);
         }
     }
 
@@ -99,6 +102,9 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.Messag
         messagesViewHolder.senderMessengerText.setVisibility(View.GONE);
         messagesViewHolder.senderMessengerImage.setVisibility(View.GONE);
         messagesViewHolder.receiverMessengerImage.setVisibility(View.GONE);
+        messagesViewHolder.senderMessengerFile.setVisibility(View.GONE);
+        messagesViewHolder.receiverMessengerFile.setVisibility(View.GONE);
+
 
         if (fromMessageType.equals("text")) {
 
@@ -146,8 +152,8 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.Messag
         //nếu là file pdf, docx
         else if (fromMessageType.equals("pdf")) {
             if (fromUserId.equals(messageSenderId)) {
-                messagesViewHolder.senderMessengerImage.setVisibility(View.VISIBLE);
-                messagesViewHolder.senderMessengerImage.setBackgroundResource(R.drawable.filepdf);
+                messagesViewHolder.senderMessengerFile.setVisibility(View.VISIBLE);
+                messagesViewHolder.senderMessengerFile.setBackgroundResource(R.drawable.filepdf);
 //                messagesViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
 //                    @Override
 //                    public void onClick(View view) {
@@ -158,9 +164,9 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.Messag
 //                });
             } else {
                 messagesViewHolder.receiverProfileImg.setVisibility(View.VISIBLE);
-                messagesViewHolder.receiverMessengerImage.setVisibility(View.VISIBLE);
+                messagesViewHolder.receiverMessengerFile.setVisibility(View.VISIBLE);
 
-                messagesViewHolder.receiverMessengerImage.setBackgroundResource(R.drawable.filepdf);
+                messagesViewHolder.receiverMessengerFile.setBackgroundResource(R.drawable.filepdf);
 
 //                messagesViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
 //                    @Override
@@ -172,8 +178,8 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.Messag
             }
         } else if (fromMessageType.equals("doc")) {
             if (fromUserId.equals(messageSenderId)) {
-                messagesViewHolder.senderMessengerImage.setVisibility(View.VISIBLE);
-                messagesViewHolder.senderMessengerImage.setBackgroundResource(R.drawable.filedoc);
+                messagesViewHolder.senderMessengerFile.setVisibility(View.VISIBLE);
+                messagesViewHolder.senderMessengerFile.setBackgroundResource(R.drawable.filedoc);
                 messagesViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -184,9 +190,9 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.Messag
                 });
             } else {
                 messagesViewHolder.receiverProfileImg.setVisibility(View.VISIBLE);
-                messagesViewHolder.receiverMessengerImage.setVisibility(View.VISIBLE);
+                messagesViewHolder.receiverMessengerFile.setVisibility(View.VISIBLE);
 
-                messagesViewHolder.receiverMessengerImage.setBackgroundResource(R.drawable.filedoc);
+                messagesViewHolder.receiverMessengerFile.setBackgroundResource(R.drawable.filedoc);
 
                 messagesViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
