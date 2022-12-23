@@ -251,14 +251,10 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.Messag
                                     notifyDataSetChanged();
 
 
-//                                    Intent intent = new Intent(messagesViewHolder.itemView.getContext(),MainActivity.class);
-//                                    messagesViewHolder.itemView.getContext().startActivity(intent);
-
                                 } else if (which == 2) {
                                     deleteMessageForEveryOne(position, messagesViewHolder);
-
-                                    Intent intent = new Intent(messagesViewHolder.itemView.getContext(), MainActivity.class);
-                                    messagesViewHolder.itemView.getContext().startActivity(intent);
+//                                    userMessagesList.remove(position);
+//                                    notifyDataSetChanged();
 
                                 }
                             }
@@ -430,28 +426,32 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.Messag
 
 
     public void deleteMessageForEveryOne(final int position, final MessagesViewHolder holder) {
+        String to=userMessagesList.get(position).getTo();
+        String from=userMessagesList.get(position).getFrom();
+        String mid=userMessagesList.get(position).getMessageID();
         DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
         rootRef.child("Messages")
-                .child(userMessagesList.get(position).getTo())
-                .child(userMessagesList.get(position).getFrom())
-                .child(userMessagesList.get(position).getMessageID())
+                .child(to)
+                .child(from)
+                .child(mid)
                 .removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
                             rootRef.child("Messages")
-                                    .child(userMessagesList.get(position).getFrom())
-                                    .child(userMessagesList.get(position).getTo())
-                                    .child(userMessagesList.get(position).getMessageID())
+                                    .child(from)
+                                    .child(to)
+                                    .child(mid)
                                     .removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
                                         @Override
                                         public void onComplete(@NonNull Task<Void> task) {
                                             if (task.isSuccessful()) {
+                                                userMessagesList.remove(position);
+                                                notifyDataSetChanged();
                                                 Toast.makeText(holder.itemView.getContext(), "Deleted Successfully", Toast.LENGTH_SHORT).show();
                                             }
                                         }
                                     });
-
                         } else {
                             Toast.makeText(holder.itemView.getContext(), "Error ", Toast.LENGTH_SHORT).show();
                         }

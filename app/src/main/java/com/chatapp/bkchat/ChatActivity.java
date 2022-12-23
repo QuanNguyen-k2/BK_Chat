@@ -29,7 +29,6 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -381,56 +380,74 @@ public class ChatActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         messagesList.clear();
-
-        RootRef.child("Messages").child(messengerSenderId).child(messageReceiverID)
-                .addChildEventListener(new ChildEventListener() {
-                    @Override
-                    public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                        Messages messages = snapshot.getValue(Messages.class);
-                        if (!messagesList.stream().anyMatch(m -> m.getMessageID() == messages.getMessageID())) {
-                            messagesList.add(messages);
-                        }
-                        messagesAdapter.notifyDataSetChanged();
-                        userMessagesList.smoothScrollToPosition(userMessagesList.getAdapter().getItemCount());
-
+        RootRef.child("Messages").child(messengerSenderId).child(messageReceiverID).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot data : snapshot.getChildren()) {
+                    Messages messages = data.getValue(Messages.class);
+                    if (!messagesList.stream().anyMatch(m -> m.getMessageID() == messages.getMessageID())) {
+                        messagesList.add(messages);
                     }
+                }
+                messagesAdapter.notifyDataSetChanged();
+                userMessagesList.smoothScrollToPosition(userMessagesList.getAdapter().getItemCount());
+            }
 
-                    @Override
-                    public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+//        RootRef.child("Messages").child(messengerSenderId).child(messageReceiverID)
+//                .addChildEventListener(new ChildEventListener() {
+//                    @Override
+//                    public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
 //                        Messages messages = snapshot.getValue(Messages.class);
 //                        if (!messagesList.stream().anyMatch(m -> m.getMessageID() == messages.getMessageID())) {
 //                            messagesList.add(messages);
 //                        }
 //                        messagesAdapter.notifyDataSetChanged();
 //                        userMessagesList.smoothScrollToPosition(userMessagesList.getAdapter().getItemCount());
-
-                    }
-
-                    @Override
-                    public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+//
+//                    }
+//
+//                    @Override
+//                    public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
 //                        Messages messages = snapshot.getValue(Messages.class);
 //                        if (!messagesList.stream().anyMatch(m -> m.getMessageID() == messages.getMessageID())) {
 //                            messagesList.add(messages);
 //                        }
 //                        messagesAdapter.notifyDataSetChanged();
 //                        userMessagesList.smoothScrollToPosition(userMessagesList.getAdapter().getItemCount());
-                    }
-
-                    @Override
-                    public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+//
+//                    }
+//
+//                    @Override
+//                    public void onChildRemoved(@NonNull DataSnapshot snapshot) {
 //                        Messages messages = snapshot.getValue(Messages.class);
 //                        if (!messagesList.stream().anyMatch(m -> m.getMessageID() == messages.getMessageID())) {
 //                            messagesList.add(messages);
 //                        }
 //                        messagesAdapter.notifyDataSetChanged();
 //                        userMessagesList.smoothScrollToPosition(userMessagesList.getAdapter().getItemCount());
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-
-                    }
-                });
+//                    }
+//
+//                    @Override
+//                    public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+//                        Messages messages = snapshot.getValue(Messages.class);
+//                        if (!messagesList.stream().anyMatch(m -> m.getMessageID() == messages.getMessageID())) {
+//                            messagesList.add(messages);
+//                        }
+//                        messagesAdapter.notifyDataSetChanged();
+//                        userMessagesList.smoothScrollToPosition(userMessagesList.getAdapter().getItemCount());
+//                    }
+//
+//                    @Override
+//                    public void onCancelled(@NonNull DatabaseError error) {
+//
+//                    }
+//                });
     }
 
     //gởi tin nhắn kiểu text
