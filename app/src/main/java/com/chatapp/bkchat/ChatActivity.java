@@ -137,7 +137,7 @@ public class ChatActivity extends AppCompatActivity {
 
                         }
                         if (which == 2) {
-                            checker = "docx";
+                            checker = "doc";
                             Intent intent = new Intent();
                             intent.setAction(Intent.ACTION_GET_CONTENT);
                             intent.setType("application/msword");

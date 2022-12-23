@@ -139,10 +139,10 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.Messag
             }
         }
         //nếu là file pdf, docx
-        else {
+        else if (fromMessageType.equals("pdf")){
             if (fromUserId.equals(messageSenderId)) {
                 messagesViewHolder.senderMessengerImage.setVisibility(View.VISIBLE);
-                messagesViewHolder.senderMessengerImage.setBackgroundResource(R.drawable.filepdfdocx);
+                messagesViewHolder.senderMessengerImage.setBackgroundResource(R.drawable.filepdf);
                 messagesViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -155,7 +155,34 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.Messag
                 messagesViewHolder.receiverProfileImg.setVisibility(View.VISIBLE);
                 messagesViewHolder.receiverMessengerImage.setVisibility(View.VISIBLE);
 
-                messagesViewHolder.receiverMessengerImage.setBackgroundResource(R.drawable.filepdfdocx);
+                messagesViewHolder.receiverMessengerImage.setBackgroundResource(R.drawable.filepdf);
+
+                messagesViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(userMessagesList.get(position).getMessage()));
+                        messagesViewHolder.itemView.getContext().startActivity(intent);
+                    }
+                });
+            }
+        }
+        else {
+            if (fromUserId.equals(messageSenderId)) {
+                messagesViewHolder.senderMessengerImage.setVisibility(View.VISIBLE);
+                messagesViewHolder.senderMessengerImage.setBackgroundResource(R.drawable.filedoc);
+                messagesViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(userMessagesList.get(position).getMessage()));
+                        /// loi cho nay
+                        messagesViewHolder.itemView.getContext().startActivity(intent);
+                    }
+                });
+            } else {
+                messagesViewHolder.receiverProfileImg.setVisibility(View.VISIBLE);
+                messagesViewHolder.receiverMessengerImage.setVisibility(View.VISIBLE);
+
+                messagesViewHolder.receiverMessengerImage.setBackgroundResource(R.drawable.filedoc);
 
                 messagesViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
