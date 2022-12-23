@@ -99,73 +99,73 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.Messag
 
             //nguoi nhan ben trai
             if (fromUserId.equals(messageSenderId)) {
-//                messagesViewHolder.receiverProfileImg.setVisibility(View.INVISIBLE);
-//                messagesViewHolder.senderMessengerImage.setVisibility(View.INVISIBLE);
                 messagesViewHolder.senderMessengerText.setVisibility(View.VISIBLE);
-
                 messagesViewHolder.senderMessengerText.setBackgroundResource(R.drawable.sender_messenger_layout);
                 messagesViewHolder.senderMessengerText.setTextColor(Color.BLACK);
-                messagesViewHolder.senderMessengerText.setText(messages.getMessage()  + "\n \n" + messages.getTime() +" - " + messages.getDate());
+                messagesViewHolder.senderMessengerText.setText(messages.getMessage() + "\n \n" + messages.getTime() + " - " + messages.getDate());
             }
             //nguoi goi ben phai
             else {
-
-               // messagesViewHolder.senderMessengerImage.setVisibility(View.INVISIBLE);
-
                 messagesViewHolder.receiverProfileImg.setVisibility(View.VISIBLE);
                 messagesViewHolder.receiverMessengerText.setVisibility(View.VISIBLE);
-
                 messagesViewHolder.receiverMessengerText.setBackgroundResource(R.drawable.receiver_messenger_layout);
                 messagesViewHolder.receiverMessengerText.setTextColor(Color.BLACK);
-                messagesViewHolder.receiverMessengerText.setText(messages.getMessage()  + "\n \n" + messages.getTime() +" - " + messages.getDate());
+                messagesViewHolder.receiverMessengerText.setText(messages.getMessage() + "\n \n" + messages.getTime() + " - " + messages.getDate());
             }
-        }
-        else  if(fromMessageType.equals("image"))
-        {
-            if(fromUserId.equals(messageSenderId))
-            {
+        } else if (fromMessageType.equals("image")) {
+            if (fromUserId.equals(messageSenderId)) {
                 messagesViewHolder.senderMessengerImage.setVisibility(View.VISIBLE);
-
                 Picasso.get().load(messages.getMessage()).into(messagesViewHolder.senderMessengerImage);
-            }
-            else
-            {
+                messagesViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(userMessagesList.get(position).getMessage()));
+                        messagesViewHolder.itemView.getContext().startActivity(intent);
+                    }
+                });
+            } else {
                 messagesViewHolder.receiverProfileImg.setVisibility(View.VISIBLE);
                 messagesViewHolder.receiverMessengerImage.setVisibility(View.VISIBLE);
 
                 Picasso.get().load(messages.getMessage()).into(messagesViewHolder.receiverMessengerImage);
+                messagesViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(userMessagesList.get(position).getMessage()));
+                        /// loi cho nay
+                        messagesViewHolder.itemView.getContext().startActivity(intent);
+                    }
+                });
             }
         }
-//        //nếu là file pdf, docx
-//        else{
-//            if(fromUserId.equals(messageSenderId)){
-//                messagesViewHolder.senderMessengerImage.setVisibility(View.VISIBLE);
-//                messagesViewHolder.senderMessengerImage.setBackgroundResource(R.drawable.file_image);
-//
-//                messagesViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View view) {
-//                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(userMessagesList.get(position).getMessage()));
-//                        messagesViewHolder.itemView.getContext().startActivity(intent);
-//                    }
-//                });
-//
-//            }
-//            else{
-//                messagesViewHolder.receiverProfileImg.setVisibility(View.VISIBLE);
-//                messagesViewHolder.receiverMessengerImage.setVisibility(View.VISIBLE);
-//
-//                messagesViewHolder.receiverMessengerImage.setBackgroundResource(R.drawable.file_image);
-//
-//                messagesViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View view) {
-//                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(userMessagesList.get(position).getMessage()));
-//                        messagesViewHolder.itemView.getContext().startActivity(intent);
-//                    }
-//                });
-//            }
-//        }
+        //nếu là file pdf, docx
+        else {
+            if (fromUserId.equals(messageSenderId)) {
+                messagesViewHolder.senderMessengerImage.setVisibility(View.VISIBLE);
+                messagesViewHolder.senderMessengerImage.setBackgroundResource(R.drawable.filepdfdocx);
+                messagesViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(userMessagesList.get(position).getMessage()));
+                        /// loi cho nay
+                        messagesViewHolder.itemView.getContext().startActivity(intent);
+                    }
+                });
+            } else {
+                messagesViewHolder.receiverProfileImg.setVisibility(View.VISIBLE);
+                messagesViewHolder.receiverMessengerImage.setVisibility(View.VISIBLE);
+
+                messagesViewHolder.receiverMessengerImage.setBackgroundResource(R.drawable.filepdfdocx);
+
+                messagesViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(userMessagesList.get(position).getMessage()));
+                        messagesViewHolder.itemView.getContext().startActivity(intent);
+                    }
+                });
+            }
+        }
     }
 
     @Override
