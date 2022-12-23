@@ -1,14 +1,5 @@
 package com.chatapp.bkchat;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -23,6 +14,15 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -397,18 +397,33 @@ public class ChatActivity extends AppCompatActivity {
 
                     @Override
                     public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-
+//                        Messages messages = snapshot.getValue(Messages.class);
+//                        if (!messagesList.stream().anyMatch(m -> m.getMessageID() == messages.getMessageID())) {
+//                            messagesList.add(messages);
+//                        }
+//                        messagesAdapter.notifyDataSetChanged();
+//                        userMessagesList.smoothScrollToPosition(userMessagesList.getAdapter().getItemCount());
 
                     }
 
                     @Override
                     public void onChildRemoved(@NonNull DataSnapshot snapshot) {
-
+//                        Messages messages = snapshot.getValue(Messages.class);
+//                        if (!messagesList.stream().anyMatch(m -> m.getMessageID() == messages.getMessageID())) {
+//                            messagesList.add(messages);
+//                        }
+//                        messagesAdapter.notifyDataSetChanged();
+//                        userMessagesList.smoothScrollToPosition(userMessagesList.getAdapter().getItemCount());
                     }
 
                     @Override
                     public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-
+//                        Messages messages = snapshot.getValue(Messages.class);
+//                        if (!messagesList.stream().anyMatch(m -> m.getMessageID() == messages.getMessageID())) {
+//                            messagesList.add(messages);
+//                        }
+//                        messagesAdapter.notifyDataSetChanged();
+//                        userMessagesList.smoothScrollToPosition(userMessagesList.getAdapter().getItemCount());
                     }
 
                     @Override
