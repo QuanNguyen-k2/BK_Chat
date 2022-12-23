@@ -3,12 +3,17 @@ package com.chatapp.bkchat;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -24,6 +29,7 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -33,10 +39,15 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.StorageTask;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.squareup.picasso.Picasso;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -50,13 +61,19 @@ public class ChatActivity extends AppCompatActivity
     private FirebaseAuth mAuth;
     private DatabaseReference RootRef;
 
-    private ImageButton SendMessageButton;
+    private ImageButton SendMessageButton,SendFileButton;
     private EditText MessageInputText;
 
     private final List<Messages> messagesList = new ArrayList<>();
     private LinearLayoutManager linearLayoutManager;
     private MessagesAdapter messagesAdapter;
     private RecyclerView userMessagesList;
+
+    private String saveCurrentTime, saveCurrentDate;
+    private String checker ="",myUrl="";
+    private Uri fileUri;
+    private StorageTask uploadTask;
+    private ProgressDialog loadingBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -83,6 +100,8 @@ public class ChatActivity extends AppCompatActivity
 
 
 
+
+
         SendMessageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -92,6 +111,54 @@ public class ChatActivity extends AppCompatActivity
 
 
 
+        DisplayLastSeen();
+
+        SendFileButton.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                CharSequence options[]= new CharSequence[]
+                        {
+                                "Images",
+                                "PDF Files",
+                                "Ms Word Files"
+                        };
+                AlertDialog.Builder builder = new AlertDialog.Builder(ChatActivity.this);
+                builder.setTitle("Select the file");
+                builder.setItems(options, new DialogInterface.OnClickListener()
+                {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which)
+                    {
+                        if(which==0)
+                        {
+
+                            checker = "image";
+
+                            Intent intent = new Intent();
+                            intent.setAction(Intent.ACTION_GET_CONTENT);
+                            intent.setType("image/*");
+                            startActivityForResult(Intent.createChooser(intent, "Select Image !"), 439);
+                        }
+                        if(which==1)
+                        {
+                            checker = "pdf";
+
+
+                        }
+                        if(which==2)
+                        {
+                            checker = "docx";
+
+                        }
+
+                    }
+                });
+
+                builder.show();
+            }
+        });
 
 
     }
@@ -116,6 +183,8 @@ public class ChatActivity extends AppCompatActivity
 
 
         SendMessageButton = (ImageButton) findViewById(R.id.send_message_btn);
+        SendFileButton = (ImageButton) findViewById(R.id.send_files_btn);
+
         MessageInputText = (EditText) findViewById(R.id.input_message);
 
 
@@ -125,9 +194,119 @@ public class ChatActivity extends AppCompatActivity
         userMessagesList.setLayoutManager(linearLayoutManager);
         userMessagesList.setAdapter(messagesAdapter);
 
+        loadingBar = new ProgressDialog(this);
+
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat currentDate = new SimpleDateFormat("MMM dd, YYYY");
+        SimpleDateFormat currentTime = new SimpleDateFormat("hh:mm a");
+        saveCurrentDate = currentDate.format(calendar.getTime());
+        saveCurrentTime = currentTime.format(calendar.getTime());
+
 
     }
 
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data)
+    {
+        super.onActivityResult(requestCode, resultCode, data);
+
+
+        if(requestCode ==439 && resultCode==RESULT_OK && data !=null && data.getData() !=null)
+        {
+
+            loadingBar.setTitle("Sending File");
+            loadingBar.setMessage("Loading...");
+            loadingBar.setCanceledOnTouchOutside(false);
+            loadingBar.show();
+            fileUri = data.getData();
+
+            if(!checker.equals("image"))
+            {
+
+            }
+            else if(checker.equals("image"))
+            {
+                StorageReference storageReference = FirebaseStorage.getInstance().getReference().child("Image Files");
+
+                String messengerSenderRef = "Messages/" + messengerSenderId +"/" + messageReceiverID;
+                String messengerReceiverRef = "Messages/" + messageReceiverID +"/" + messengerSenderId;
+
+                DatabaseReference userMessengerKeyRef =RootRef.child("Messages")
+                        .child(messengerSenderId).child(messengerSenderId).push();
+
+                String messagePushId = userMessengerKeyRef.getKey();
+
+                final StorageReference filePath = storageReference.child(messagePushId + "." + "jpg");
+
+                uploadTask = filePath.putFile(fileUri);
+                uploadTask.continueWithTask(new Continuation() {
+                    @Override
+                    public Object then(@NonNull Task task) throws Exception
+                    {
+                        if(!task.isSuccessful())
+                        {
+                            throw  task.getException();
+                        }
+                        return filePath.getDownloadUrl();
+                    }
+                }).addOnCompleteListener(new OnCompleteListener<Uri>()
+                {
+
+                    @Override
+                    public void onComplete(@NonNull Task<Uri> task)
+                    {
+
+                        if(task.isSuccessful())
+                        {
+                            Uri downloadUrl = task.getResult();
+                            myUrl = downloadUrl.toString();
+
+                            Map messengerTextBody = new HashMap();
+                            messengerTextBody.put("message", myUrl);
+                            messengerTextBody.put("type", checker);
+                            messengerTextBody.put("from", messengerSenderId);
+                            messengerTextBody.put("to", messageReceiverID);
+                            messengerTextBody.put("messageID", messagePushId);
+                            messengerTextBody.put("name", fileUri.getLastPathSegment());
+                            messengerTextBody.put("date",saveCurrentDate);
+                            messengerTextBody.put("time", saveCurrentTime);
+
+                            Map messengerBodyDetails = new HashMap();
+                            messengerBodyDetails.put(messengerSenderRef + "/" + messagePushId, messengerTextBody);
+                            messengerBodyDetails.put(messengerReceiverRef + "/" + messagePushId, messengerTextBody);
+
+                            RootRef.updateChildren(messengerBodyDetails).addOnCompleteListener(new OnCompleteListener()
+                            {
+                                @Override
+                                public void onComplete(@NonNull Task task)
+                                {
+                                    if(task.isSuccessful())
+                                    {
+                                        loadingBar.dismiss();
+                                        Toast.makeText(ChatActivity.this, "Your message has been sent!", Toast.LENGTH_SHORT).show();
+                                    }
+                                    else
+                                    {
+                                        loadingBar.dismiss();
+                                        Toast.makeText(ChatActivity.this, "Error", Toast.LENGTH_SHORT).show();
+                                    }
+                                    MessageInputText.setText("");
+                                }
+                            });
+
+                        }
+                    }
+                });
+            }
+            else
+            {
+                loadingBar.dismiss();
+                Toast.makeText(this, "Nothing Selected, Error", Toast.LENGTH_SHORT).show();
+            }
+
+        }
+    }
 
     //hàm set online offline lastseen
     private void DisplayLastSeen(){
@@ -225,6 +404,8 @@ public class ChatActivity extends AppCompatActivity
             messengerTextBody.put("to", messageReceiverID);
             messengerTextBody.put("messageID", messagePushId);
             messengerTextBody.put("name", "text");
+            messengerTextBody.put("date",saveCurrentDate);
+            messengerTextBody.put("time", saveCurrentTime);
 
             Map messengerBodyDetails = new HashMap();
             messengerBodyDetails.put(messengerSenderRef + "/" + messagePushId, messengerTextBody);

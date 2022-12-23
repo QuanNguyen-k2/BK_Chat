@@ -32,7 +32,7 @@
 
     </androidx.recyclerview.widget.RecyclerView>
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/chat_linear_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -42,14 +42,29 @@
         android:orientation="horizontal"
         android:padding="@dimen/_3sdp">
 
+
+        <ImageButton
+            android:id="@+id/send_files_btn"
+            android:layout_width="60dp"
+            android:layout_height="50dp"
+            android:src="@drawable/file"
+            android:backgroundTint="@color/white"
+            android:layout_alignParentStart="true"
+            />
+
+
         <EditText
             android:id="@+id/input_message"
-            android:layout_width="@dimen/_240sdp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/background_input"
             android:hint="..."
+            android:background="@drawable/background_input"
             android:padding="15dp"
-            android:textColorHint="#546E7A" />
+            android:textColorHint="#546E7A"
+            android:layout_toEndOf="@+id/send_files_btn"
+            android:maxLines="5"
+            android:layout_toStartOf="@id/send_message_btn"
+            />
 
         <View
             android:layout_width="0dp"
@@ -60,11 +75,13 @@
             android:id="@+id/send_message_btn"
             android:layout_width="@dimen/_45sdp"
             android:layout_height="@dimen/_45sdp"
-            android:background="@drawable/background_image"
             android:contentDescription="@string/send"
             android:src="@drawable/send_message"
+            android:layout_alignParentEnd="true"
+            android:backgroundTint="@color/white"
+
             tools:ignore="SpeakableTextPresentCheck,SpeakableTextPresentCheck" />
 
-    </LinearLayout>
+    </RelativeLayout>
 
 </RelativeLayout>

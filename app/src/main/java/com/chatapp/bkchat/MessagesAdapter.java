@@ -39,14 +39,15 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.Messag
         public RoundedImageView receiverProfileImg;
         public ImageView receiverMessengerImage, senderMessengerImage;
 
+
         public MessagesViewHolder(@NonNull View itemView) {
             super(itemView);
 
             receiverMessengerText = (TextView) itemView.findViewById(R.id.receiver_message_text);
             senderMessengerText = (TextView) itemView.findViewById(R.id.sender_message_text);
             receiverProfileImg = (RoundedImageView) itemView.findViewById(R.id.message_profile_image);
-            receiverMessengerImage = (ImageView) itemView.findViewById(R.id.receiver_message_image);
-            senderMessengerImage = (ImageView) itemView.findViewById(R.id.sender_message_image);
+            receiverMessengerImage = (ImageView) itemView.findViewById(R.id.message_receiver_image_view);
+            senderMessengerImage = (ImageView) itemView.findViewById(R.id.message_sender_image_view);
         }
     }
 
@@ -88,17 +89,13 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.Messag
             }
         });
 
-//        messagesViewHolder.receiverMessengerText.setVisibility(View.GONE);
-//        messagesViewHolder.receiverProfileImg.setVisibility(View.GONE);
-//        messagesViewHolder.senderMessengerText.setVisibility(View.GONE);
-//        messagesViewHolder.senderMessengerImage.setVisibility(View.GONE);
-//        messagesViewHolder.receiverMessengerImage.setVisibility(View.GONE);
+        messagesViewHolder.receiverMessengerText.setVisibility(View.GONE);
+        messagesViewHolder.receiverProfileImg.setVisibility(View.GONE);
+        messagesViewHolder.senderMessengerText.setVisibility(View.GONE);
+        messagesViewHolder.senderMessengerImage.setVisibility(View.GONE);
+        messagesViewHolder.receiverMessengerImage.setVisibility(View.GONE);
 
         if (fromMessageType.equals("text")) {
-            messagesViewHolder.receiverProfileImg.setVisibility(View.INVISIBLE);
-            messagesViewHolder.receiverMessengerText.setVisibility(View.INVISIBLE);
-            messagesViewHolder.senderMessengerText.setVisibility(View.INVISIBLE);
-
 
             //nguoi nhan ben trai
             if (fromUserId.equals(messageSenderId)) {
@@ -108,7 +105,7 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.Messag
 
                 messagesViewHolder.senderMessengerText.setBackgroundResource(R.drawable.sender_messenger_layout);
                 messagesViewHolder.senderMessengerText.setTextColor(Color.BLACK);
-                messagesViewHolder.senderMessengerText.setText(messages.getMessage());
+                messagesViewHolder.senderMessengerText.setText(messages.getMessage()  + "\n \n" + messages.getTime() +" - " + messages.getDate());
             }
             //nguoi goi ben phai
             else {
@@ -120,22 +117,25 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.Messag
 
                 messagesViewHolder.receiverMessengerText.setBackgroundResource(R.drawable.receiver_messenger_layout);
                 messagesViewHolder.receiverMessengerText.setTextColor(Color.BLACK);
-                messagesViewHolder.receiverMessengerText.setText(messages.getMessage());
+                messagesViewHolder.receiverMessengerText.setText(messages.getMessage()  + "\n \n" + messages.getTime() +" - " + messages.getDate());
             }
         }
-//        else  if(fromMessageType.equals("image")){
-//            if(fromUserId.equals(messageSenderId)){
-//                messagesViewHolder.senderMessengerImage.setVisibility(View.VISIBLE);
-//
-//                Picasso.get().load(messages.getMessage()).into(messagesViewHolder.senderMessengerImage);
-//            }
-//            else {
-//                messagesViewHolder.receiverProfileImg.setVisibility(View.VISIBLE);
-//                messagesViewHolder.receiverMessengerImage.setVisibility(View.VISIBLE);
-//
-//                Picasso.get().load(messages.getMessage()).into(messagesViewHolder.receiverMessengerImage);
-//            }
-//        }
+        else  if(fromMessageType.equals("image"))
+        {
+            if(fromUserId.equals(messageSenderId))
+            {
+                messagesViewHolder.senderMessengerImage.setVisibility(View.VISIBLE);
+
+                Picasso.get().load(messages.getMessage()).into(messagesViewHolder.senderMessengerImage);
+            }
+            else
+            {
+                messagesViewHolder.receiverProfileImg.setVisibility(View.VISIBLE);
+                messagesViewHolder.receiverMessengerImage.setVisibility(View.VISIBLE);
+
+                Picasso.get().load(messages.getMessage()).into(messagesViewHolder.receiverMessengerImage);
+            }
+        }
 //        //nếu là file pdf, docx
 //        else{
 //            if(fromUserId.equals(messageSenderId)){

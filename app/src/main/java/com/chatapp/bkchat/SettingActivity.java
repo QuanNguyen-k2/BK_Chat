@@ -1,5 +1,6 @@
 package com.chatapp.bkchat;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -15,6 +16,9 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -23,8 +27,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.squareup.picasso.Picasso;
+
 
 public class SettingActivity extends AppCompatActivity {
     private static final int SELECT_PICTURE = 1;
@@ -41,6 +47,10 @@ public class SettingActivity extends AppCompatActivity {
     Uri selectedImageUri;
     Toolbar mToolbar;
     String path;
+    //image profile
+    private static final int GalleryPick = 1;
+    private StorageReference UserImageReference;
+    private ProgressDialog loadingBar;
 
 
     @Override
@@ -83,6 +93,10 @@ public class SettingActivity extends AppCompatActivity {
     }
 
     @Override
+
+
+
+
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {

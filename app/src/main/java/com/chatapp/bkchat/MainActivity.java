@@ -171,6 +171,9 @@ public class MainActivity extends AppCompatActivity {
         startActivity(find);
     }
 
+
+
+
     private void updateUserState(String state){
         String saveCurrentTime, saveCurrentDate;
         Calendar calendar = Calendar.getInstance();
