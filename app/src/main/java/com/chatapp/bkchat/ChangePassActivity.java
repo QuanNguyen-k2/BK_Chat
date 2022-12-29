@@ -3,12 +3,14 @@ package com.chatapp.bkchat;
 import android.content.Context;
 import android.graphics.Rect;
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,6 +33,8 @@ public class ChangePassActivity extends AppCompatActivity {
     EditText confirmNewPass;
     TextView textWarning;
     String username, uid;
+    ImageView visibleOldPass;
+    ImageView visibleNewPass;
     Toolbar mToolbar;
 
     @Override
@@ -48,10 +52,37 @@ public class ChangePassActivity extends AppCompatActivity {
         uid = getIntent().getExtras().get("uid").toString();
         name.setText(username);
         mToolbar = findViewById(R.id.toolbar_setting);
+        visibleNewPass = findViewById(R.id.visibleNewPass);
+        visibleNewPass.setOnClickListener(v -> visibleNewPass());
+        visibleOldPass = findViewById(R.id.visibleOldPass);
+        visibleOldPass.setOnClickListener(v -> visibleOldPass());
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         setTitle("");
+    }
+
+    private void visibleNewPass() {
+        if (newPass.getInputType() == InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD) {
+            newPass.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+            confirmNewPass.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+        } else {
+            newPass.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+            confirmNewPass.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+        }
+        newPass.setSelection(newPass.length());
+        confirmNewPass.setSelection(confirmNewPass.length());
+    }
+
+    private void visibleOldPass() {
+
+        if (oldPass.getInputType() == InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD) {
+            oldPass.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+        } else {
+            oldPass.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+        }
+        oldPass.setSelection(oldPass.length());
+
     }
 
     private void changeData() {

@@ -66,6 +66,7 @@
                 android:textSize="@dimen/_13sdp" />
 
             <ImageButton
+                android:id="@+id/visibleOldPass"
                 android:layout_width="@dimen/_28sdp"
                 android:layout_height="@dimen/_28sdp"
                 android:layout_alignParentRight="true"
@@ -95,6 +96,7 @@
                 android:textSize="@dimen/_13sdp" />
 
             <ImageButton
+                android:id="@+id/visibleNewPass"
                 android:layout_width="@dimen/_28sdp"
                 android:layout_height="@dimen/_28sdp"
                 android:layout_alignParentRight="true"
@@ -122,12 +124,6 @@
                 android:textColorHint="#546E7A"
                 android:textSize="@dimen/_13sdp" />
 
-            <ImageButton
-                android:layout_width="@dimen/_28sdp"
-                android:layout_height="@dimen/_28sdp"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:background="@drawable/ic_visibility" />
         </RelativeLayout>
 
         <TextView
