@@ -87,29 +87,23 @@ public class ContactFragment extends Fragment {
 
                                     if (state.equals("online")) {
                                         holder.onlineIcon.setVisibility(View.VISIBLE);
+                                        holder.userStatus.setText("Online");
                                     } else if (state.equals("offline")) {
                                         holder.onlineIcon.setVisibility(View.INVISIBLE);
+                                        holder.userStatus.setText("Last seen: " + date + " " + time);
                                     }
                                 } else {
                                     holder.onlineIcon.setVisibility(View.INVISIBLE);
+                                    holder.userStatus.setText("Offline");
                                 }
+                                String profileName = dataSnapshot.child("username").getValue().toString();
+                                holder.userName.setText(profileName);
 
                                 if (dataSnapshot.hasChild("image")) {
                                     String profileImage = dataSnapshot.child("image").getValue().toString();
-                                    String profileName = dataSnapshot.child("username").getValue().toString();
-                                    String profileStatus = dataSnapshot.child("description").getValue().toString();
-
-                                    holder.userName.setText(profileName);
-                                    holder.userStatus.setText(profileStatus);
                                     Picasso.get().load(profileImage).placeholder(R.drawable.profile_image).into(holder.userImage);
-
-                                } else {
-                                    String profileName = dataSnapshot.child("username").getValue().toString();
-                                    String profileStatus = dataSnapshot.child("description").getValue().toString();
-
-                                    holder.userName.setText(profileName);
-                                    holder.userStatus.setText(profileStatus);
                                 }
+
                                 holder.itemView.setOnClickListener(v -> {
                                     String uid = dataSnapshot.getKey().toString();
                                     Intent profileIntent = new Intent(getContext(), ProfileActivity.class);
@@ -130,8 +124,7 @@ public class ContactFragment extends Fragment {
                 @Override
                 public ContactsViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
                     View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.users_display_layout, viewGroup, false);
-                    ContactsViewHolder viewHolder = new ContactsViewHolder(view);
-                    return viewHolder;
+                    return new ContactsViewHolder(view);
                 }
             };
             myContactsList.setAdapter(adapter);

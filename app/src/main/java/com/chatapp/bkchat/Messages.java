@@ -1,20 +1,27 @@
 package com.chatapp.bkchat;
 
 public class Messages {
-    private String from, type, message, name, to, messageID, time, date;
+    private String date;
+    private String from;
+    private String message;
+    private String messageID;
+    private String name;
+    private String time;
+    private String to;
+    private String type;
 
-    public Messages() {
+    public Messages(String date, String from, String message, String messageID, String name, String time, String to, String type) {
+        this.date = date;
+        this.from = from;
+        this.message = message;
+        this.messageID = messageID;
+        this.name = name;
+        this.time = time;
+        this.to = to;
+        this.type = type;
     }
 
-    public Messages(String from, String type, String message, String name, String to, String messageID, String time, String date) {
-        this.from = from;
-        this.type = type;
-        this.message = message;
-        this.name = name;
-        this.to = to;
-        this.messageID = messageID;
-        this.time = time;
-        this.date = date;
+    public Messages() {
     }
 
     public String getFrom() {

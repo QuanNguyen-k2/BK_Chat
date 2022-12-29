@@ -3,6 +3,7 @@ package com.chatapp.bkchat;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -28,11 +29,10 @@ public class MainActivity extends AppCompatActivity {
     ViewPager viewPager;
     TabLayout tabLayout;
     TabAccessorAdapter tabAccessorAdapter;
-
-  //  FirebaseUser currentUser;
     FirebaseAuth auth;
     DatabaseReference rootRef;
     private String currentUserId;
+    private long backPressedTime;
 
 
     @Override
@@ -54,15 +54,15 @@ public class MainActivity extends AppCompatActivity {
                     sendUserToLogin();
                     return true;
                 }
-                case R.id.settings:{
+                case R.id.settings: {
                     sendUserToActivity(SettingActivity.class);
-                    return true ;
+                    return true;
                 }
-                case R.id.FindFriends:{
+                case R.id.FindFriends: {
                     sendUserToActivity(FindFriendsActivity.class);
                     return true;
                 }
-                case R.id.qrCode:{
+                case R.id.qrCode: {
                     sendUserToActivity(ScanQrActivity.class);
                     return true;
                 }
@@ -74,11 +74,12 @@ public class MainActivity extends AppCompatActivity {
 
     private void khoiTao() {
         auth = FirebaseAuth.getInstance();
-     //   currentUser = auth.getCurrentUser();
-        rootRef= FirebaseDatabase.getInstance().getReference();
+        //   currentUser = auth.getCurrentUser();
+        rootRef = FirebaseDatabase.getInstance().getReference();
 
         toolbar = findViewById(R.id.toolBar);
         toolbar.inflateMenu(R.menu.option_menu);
+
 
         tabLayout = findViewById(R.id.main_tab_layout);
         tabAccessorAdapter = new TabAccessorAdapter(getSupportFragmentManager(), 0);
@@ -89,71 +90,51 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.setupWithViewPager(viewPager);
         setupTabIcons();
     }
+
     private void setupTabIcons() {
         tabLayout.getTabAt(0).setIcon(R.drawable.baseline_question_answer_white_18);
         tabLayout.getTabAt(1).setIcon(R.drawable.baseline_people_white_18);
         tabLayout.getTabAt(2).setIcon(R.drawable.baseline_group_add_white_18);
     }
-    @Override
-    protected void onStart()
-    {
-        super.onStart();
 
+    @Override
+    protected void onStart() {
+        super.onStart();
         FirebaseUser currentUser = auth.getCurrentUser();
-        if (currentUser == null)
-        {
+        if (currentUser == null) {
             sendUserToLogin();
-        }
-        else
-        {
+        } else {
             updateUserState("online");
             verifyUser();
         }
     }
 
-    @Override
-    protected void onStop()
-    {
-        super.onStop();
-        FirebaseUser currentUser = auth.getCurrentUser();
-        if(currentUser != null)
-        {
-            updateUserState("offline");
-        }
-    }
 
     @Override
-    protected void onDestroy()
-    {
+    protected void onDestroy() {
+        updateUserState("offline");
         super.onDestroy();
-        FirebaseUser currentUser = auth.getCurrentUser();
-        if(currentUser != null)
-        {
-            updateUserState("offline");
-        }
     }
 
 
-    private void verifyUser()
-    {
-        String UserCurrentId = auth.getCurrentUser().getUid();
+    private void verifyUser() {
 
-        rootRef.child("Users").child(UserCurrentId).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if((dataSnapshot.child("username").exists())){
+        rootRef.child("Users").child(currentUserId).
+                addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        if ((dataSnapshot.child("username").exists())) {
 //                    Toast.makeText(MainActivity.this, "Welcome !", Toast.LENGTH_SHORT).show();
-                }
-                else {
+                        } else {
 
-                }
-            }
+                        }
+                    }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
 
-            }
-        });
+                    }
+                });
     }
 
 
@@ -164,31 +145,50 @@ public class MainActivity extends AppCompatActivity {
         finish();
     }
 
-    private  void sendUserToActivity(Class<?> toActivity){
-        Intent activity = new Intent(MainActivity.this,toActivity );
+    private void sendUserToActivity(Class<?> toActivity) {
+        Intent activity = new Intent(MainActivity.this, toActivity);
         startActivity(activity);
     }
 
 
+    private void updateUserState(String state) {
+        FirebaseUser currentUser = auth.getCurrentUser();
+        if (currentUser != null) {
+            currentUserId = currentUser.getUid();
+            String saveCurrentTime, saveCurrentDate;
+            Calendar calendar = Calendar.getInstance();
+            SimpleDateFormat currentDate = new SimpleDateFormat("dd-MM-YYYY");
+            SimpleDateFormat currentTime = new SimpleDateFormat("hh:mm a");
+            saveCurrentDate = currentDate.format(calendar.getTime());
+            saveCurrentTime = currentTime.format(calendar.getTime());
+
+            HashMap<String, Object> onlineStateMap = new HashMap<>();
+            onlineStateMap.put("time", saveCurrentTime);
+            onlineStateMap.put("date", saveCurrentDate);
+            onlineStateMap.put("state", state);
 
 
-    private void updateUserState(String state){
-        String saveCurrentTime, saveCurrentDate;
-        Calendar calendar = Calendar.getInstance();
-        SimpleDateFormat currentDate = new SimpleDateFormat("MMM dd, YYYY");
-        SimpleDateFormat currentTime = new SimpleDateFormat("hh:mm a");
-        saveCurrentDate = currentDate.format(calendar.getTime());
-        saveCurrentTime = currentTime.format(calendar.getTime());
-
-        HashMap<String, Object> onlineStateMap = new HashMap<>();
-        onlineStateMap.put("time", saveCurrentTime);
-        onlineStateMap.put("date", saveCurrentDate);
-        onlineStateMap.put("state", state);
-
-        currentUserId = auth.getCurrentUser().getUid();
-
-        rootRef.child("Users").child(currentUserId).child("userState")
-                .updateChildren(onlineStateMap);
+            rootRef.child("Users").child(currentUserId).child("userState")
+                    .updateChildren(onlineStateMap);
+        }
     }
+
+    @Override
+    public void onBackPressed() {
+        if (backPressedTime + 2000 > System.currentTimeMillis()) {
+            super.onBackPressed();
+            return;
+        } else {
+            Toast.makeText(this, "Press back again to exit", Toast.LENGTH_SHORT).show();
+        }
+        backPressedTime = System.currentTimeMillis();
+    }
+
+//    @Override
+//    protected void onUserLeaveHint() {
+//        updateUserState("offline");
+//        super.onUserLeaveHint();
+//    }
+
 
 }

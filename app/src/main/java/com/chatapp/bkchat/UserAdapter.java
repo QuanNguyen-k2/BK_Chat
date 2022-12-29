@@ -34,7 +34,6 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
     }
 
 
-
     @NonNull
     @Override
     public UserViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -58,13 +57,14 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
             });
             return;
         }
-        if(listMyFriends!=null){
-            String uid=listMyFriends.get(position);
-            DatabaseReference userRef= FirebaseDatabase.getInstance().getReference().child("Users").child(uid);
+
+        if (listMyFriends != null) {
+            String uid = listMyFriends.get(position);
+            DatabaseReference userRef = FirebaseDatabase.getInstance().getReference().child("Users").child(uid);
             userRef.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    Contacts contact=snapshot.getValue(Contacts.class);
+                    Contacts contact = snapshot.getValue(Contacts.class);
                     holder.userName.setText(contact.getUsername());
                     holder.userStatus.setText(contact.getDescription());
                     Picasso.get().load(contact.getImage()).placeholder(R.drawable.image_user).into(holder.profileImage);
